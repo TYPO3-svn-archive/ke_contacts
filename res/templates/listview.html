@@ -1,0 +1,96 @@
+<!--###LISTVIEW### begin-->
+<div id="kecontacts-mainContainerListview">
+    <div id="kecontacts-subMainContainerListview">
+		<form name="tx_indexedsearchform" action="###FORMURL###" method="POST" enctype="multipart/form-data">
+        <div id="kecontacts-headerContainerListview">
+			<div id="kecontacts-linkHeaderContainerListview">
+                ###CREATENEWCONTACT###
+            </div>
+            <div id="kecontacts-dropDownHeaderContainerListview">
+                <select name="tx_kecontacts_pi1[headerDropDown]">
+                    ###FILTER1_OPTIONS###
+                </select>
+            </div>
+            <div id="kecontacts-searchHeaderContainerListview">
+                    <input name="tx_kecontacts_pi1[sword]"  type="text" size="25" Value="###SEARCHPHRASE###" onclick="if(this.value == this.defaultValue) this.value = '';" />
+                    <input class="searchButtonListView"type="submit" value="Los"/>
+            </div>
+		</div>
+        <div class="clearer">&nbsp;</div>
+        <div id="kecontacts-listContainerListview">
+            <div id="kecontacts-headerListContainerListview">
+                <div id="kecontacts-headerRowListView">
+                    <div class="firstCellHeaderListContainer">
+                        <div class="firstCellHeaderList">
+                            <p>###LIST_HEADER1###</p>
+                        </div>
+                    </div>
+                    <div class="secondCellHeaderListContainer">
+                        <div class="secondCellHeaderList">
+                            <p>###LIST_HEADER2###</p>
+                        </div>
+                    </div>
+                    <div class="thirdCellHeaderListContainer">
+                        <div class="thirdCellHeaderList">
+                            <p>###LIST_HEADER3###</p>
+                        </div>
+                    </div>
+                    <div class="forthCellHeaderListContainer">
+                        <div class="forthCellHeaderList">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearer">&nbsp;</div>
+            <div id="kecontacts-bodyListContainerListview">
+				###ITEMS###
+            </div>
+        </div>
+        <div class="clearer">&nbsp;</div>
+        <div id="kecontacts-footerListView">
+            <div id="kecontacts-pageCounterListView">
+                ###PAGECOUNT###
+            </div>
+            <div id="kecontacts-jumpToPageListView">
+                <div id="kecontacts-labelJumpToPageListView">
+                    ###GOTOPAGE###
+                </div>
+                <div id="kecontacts-dropDownJumpToPageListView">
+                    <select class="ke-contacts-list-pages" onchange="this.form.submit()" name="tx_kecontacts_pi1[pointer]">
+						###PAGES_OPTIONS###
+                </select>
+                </div>
+            </div>
+        </div>
+        <div class="clearer">&nbsp;</div>
+		</form>
+    </div>
+</div>
+<!--###LISTVIEW### end-->
+
+<!--###ITEM### begin-->
+<div class="###HIGHLIGHTROW###">
+	<div id="kecontacts-firstCellBodyListContainer">
+		<div class="firstCellBodyList">
+			<p>###LAST_NAME### ###FIRST_NAME### ###TITLE### <br/>###ORGANISATION###</p>
+        </div>
+    </div>
+    <div id="kecontacts-secondCellBodyListContainer">
+        <div class="secondCellBodyList">
+            <p>###ADDRESS###<br/>###ZIP### ###CITY###</p>
+        </div>
+    </div>
+    <div id="kecontacts-thirdCellBodyListContainer">
+        <div class="thirdCellBodyList">
+            <p>###TELEPHONE###<br/>###EMAIL###<br/>###WWW###</p>
+        </div>
+    </div>
+    <div id="kecontacts-forthCellBodyListContainer">
+        <div class="forthCellBodyList">
+            ###EDIT_ICON###
+        </div>
+    </div>
+</div>
+<div class="clearer">&nbsp;</div>
+<!--###ITEM### end-->

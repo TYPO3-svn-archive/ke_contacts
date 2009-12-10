@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'ke_contacts'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tt_content.list_type_pi1">Kontaktverwaltung</label>
+			<label index="tx_kecontacts_comments">tt_address Comments</label>
+			<label index="tx_kecontacts_comments.comment">Comment</label>
+			<label index="tx_kecontacts_comments.fe_user">User commenting</label>
+			<label index="tt_address.tx_kecontacts_members">Organization Members</label>
+			<label index="tt_address.tx_kecontacts_comments">Comments</label>
+			<label index="tt_address.tx_kecontacts_type.I.0">Standard</label>
+			<label index="tt_address.tx_kecontacts_type.I.1">Person</label>
+			<label index="tt_address.tx_kecontacts_type.I.2">Organization</label>
+			<label index="tt_address.tx_kecontacts_type">Type</label>
+			<label index="tx_kecontacts_comments.organization">Organization</label>
+			<label index="tt_address.tx_kecontacts_function">Function</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tt_content.list_type_pi1">Kontaktverwaltung</label>
+			<label index="tx_kecontacts_comments">tt_address Kommentare</label>
+			<label index="tx_kecontacts_comments.comment">Kommentar</label>
+			<label index="tx_kecontacts_comments.fe_user">Kommentar von Benutzer</label>
+			<label index="tt_address.tx_kecontacts_members">Mitglieder der Organisation</label>
+			<label index="tt_address.tx_kecontacts_comments">Kommentare</label>
+			<label index="tt_address.tx_kecontacts_type.I.0">Standard</label>
+			<label index="tt_address.tx_kecontacts_type.I.1">Person</label>
+			<label index="tt_address.tx_kecontacts_type.I.2">Organisation</label>
+			<label index="tt_address.tx_kecontacts_type">Typ</label>
+			<label index="tx_kecontacts_comments.organization">Organisation</label>
+			<label index="tt_address.tx_kecontacts_function">Funktion</label>
+		</languageKey>
+	</data>
+</T3locallang>
