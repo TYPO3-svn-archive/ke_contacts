@@ -390,8 +390,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			return $content;
 		}
 		
-		t3lib_div::debug($oldOrgId.' '.$orgId);
-		
 		//update relation to organization - if changed
 		if($oldOrgId != -2 && $oldOrgId != -1) {
 			if($orgId == 0) {
@@ -412,7 +410,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				return $content;
 			}
 		} elseif($oldOrgId == -1) {
-			if($orgId == 0) t3lib_div::debug('NIX');
 			//person was not connected to any organization until now, so create a new relation
 			$insertOrgRel = array('uid_foreign' => $addressId, 'uid_local' => $orgId);
 			$resInsertData = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tt_address_tx_kecontacts_members_mm',$insertOrgRel);
@@ -844,7 +841,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$searchWord = (strlen($this->piVars['sword']))?(t3lib_div::removeXSS($this->piVars['sword'])):$this->pi_getLL('search_phrase');
 		
 		//get items for listview
-		$listItems = $this->getData();
+		if((!isset($this->piVars['headerDropDown']) || $this->piVars['headerDropDown'] == 3 || $this->piVars['headerDropDown'] == 1) && $searchWord != $this->pi_getLL('search_phrase') && strlen($searchWord)) {
+			//get results considering contacts of organisation
+			$listItems = $this->getDataRelation();
+		} else {
+			//no relation from contact to organization needed
+			$listItems = $this->getData();
+		}
 		
 		//generate filter options
 		$pageSelected = (isset($this->piVars['pointer']))?(t3lib_div::removeXSS($this->piVars['pointer'])):0;
@@ -874,6 +877,96 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 						);
 		
 		$content = $this->substituteMarkers('###LISTVIEW###',$markerArray);
+		return $content;
+	}
+	
+	function getDataRelation() {		
+		//get filter from piVars
+		$typeFilter = intval($this->piVars['headerDropDown']);
+		$searchWord = t3lib_div::removeXSS($this->piVars['sword']);
+		$content = '';
+		$searchDbFields = 'first_name,last_name,address,city,zip,email,phone,fax,mobile';
+		
+		//generate where clause
+		$whereClause = (!strlen($searchWord) || $searchWord == $this->pi_getLL('search_phrase'))?'1=1':'1=1 '.$this->cObj->searchWhere($searchWord,$searchDbFields,'tt_address');
+		$whereClause .= ' '.$this->cObj->enableFields('tt_address');
+		$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
+		$whereClause .= ' AND tt_address.tx_kecontacts_type IN (1,2)';
+		
+		//execute query
+		//$GLOBALS['TYPO3_DB']->debugOutput = true;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'','tt_address.last_name ASC');
+		
+		//initialize arrays
+		$itemList = array();
+		$relatedList = array();
+		$relatedContacts = array();
+		
+		//filter organizations to display contacts working for organization
+		if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {			
+			while($addressRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$itemList[$addressRow['uid']] = $addressRow;
+					
+					if($addressRow['tx_kecontacts_type'] == 2) {
+						//store organization uid
+						$relatedList[] = $addressRow['uid'];
+					}
+			}
+			
+			//get contacts working for found organizations
+			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.join(',',$relatedList).')');
+			
+			if($GLOBALS['TYPO3_DB']->sql_num_rows($resRelatedContacts)) {
+				//add contacts only if not already in result list
+				while($relatedContacts = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resRelatedContacts)) {
+					if(!array_key_exists($relatedContact['uid'],$itemList)) $itemList[$relatedContacts['uid']] = $relatedContacts;
+				}
+			}
+		} else {
+			$content = '<strong>'.$this->pi_getLL('error_no_results').'</strong>';
+			return $content;
+		}
+		
+		//collect data for page browser
+		$resCount = count($itemList);
+		$numberOfResultsToDisplay = ($this->flexConf['contacts_per_page'] != 25)?$this->flexConf['contacts_per_page']:25;
+		$this->numberOfPages = ceil($resCount / $numberOfResultsToDisplay);
+		
+		//slice array for use with pagebrowser - cut elements off
+		$limitFrom = $this->piVars['pointer'] * $numberOfResultsToDisplay;
+		$limitTo = $numberOfResultsToDisplay;
+		$itemArray = array_slice($itemList,$limitFrom,$limitTo,false);
+		
+		//create list items
+		foreach($itemArray as $addressRow) {
+			$rowCount++;
+				
+				//link configuration for "new" link
+				$linkConfEdit = array(
+					'parameter' => $GLOBALS['TSFE']->id,
+					'additionalParams' => '&'.$this->prefixId.'[mode]=single&'.$this->prefixId.'[id]='.$addressRow['uid'],
+					'title' => $this->pi_getLL('list_single'),
+				);
+				
+				$markerArray = array(
+				
+								'FIRST_NAME' => $addressRow['first_name'],
+								'LAST_NAME' => (strlen($addressRow['first_name']))?$addressRow['last_name'].', ':$addressRow['last_name'],
+								'TITLE' => $addressRow['title'],
+								'ORGANISATION' => $addressRow['company'],
+								'ADDRESS' => $addressRow['address'],
+								'ZIP' => $addressRow['zip'],
+								'CITY' => $addressRow['city'],
+								'TELEPHONE' => $addressRow['phone'],
+								'EMAIL' => $this->cObj->typoLink($addressRow['email'],array('parameter' => $addressRow['email'])),
+								'WWW' => $this->cObj->typoLink($addressRow['www'],array('parameter' => $addressRow['www'],'extTarget' => '_blank')),
+								'EDIT_ICON' => $this->cObj->typoLink($this->cObj->fileResource(t3lib_extMgm::siteRelPath($this->extKey).'res/img/Edit.png'),$linkConfEdit),
+								'HIGHLIGHTROW' => (($rowCount % 2) == 0)?'firstRowBodyList':'secondRowBodyList',
+							);
+				$content .= $this->substituteMarkers('###ITEM###',$markerArray);
+		}
+		
+		//return list items as html content
 		return $content;
 	}
 	
@@ -909,17 +1002,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('*','tt_address','tt_address_tx_kecontacts_members_mm','tt_address',$whereClause,'','tt_address.last_name ASC','');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'','tt_address.last_name ASC',join(',',$limit));
 		
-		//also select contacts connected to an organization - if condition matches
-		if((!isset($this->piVars['headerDropDown']) || $this->piVars['headerDropDown'] == 3 || $this->piVars['headerDropDown'] == 1) && $searchWord != $this->pi_getLL('search_phrase') && strlen($searchWord)) {
-			$searchWhereTta = $this->cObj->searchWhere($searchWord,$searchDbFields,'tt_address');
-			$searchWhereTta2 = "OR (tta2.first_name LIKE '".$searchWord."' OR tta2.last_name LIKE '".$searchWord."' OR tta2.address LIKE '".$searchWord."' OR tta2.city LIKE '".$searchWord."' OR tta2.zip LIKE '".$searchWord."' OR tta2.email LIKE '".$searchWord."' OR tta2.phone LIKE '".$searchWord."' OR tta2.fax LIKE '".$searchWord."' OR tta2.mobile LIKE '".$searchWord."')";
-
-			//TODO: ABFRAGE BEI ORG/ALLE und allen Kontakten ausgliedern!
-			$sql_query = 'SELECT * FROM tt_address LEFT JOIN tt_address_tx_kecontacts_members_mm AS mm1 ON tt_address.uid = mm1.uid_local LEFT JOIN tt_address AS tta2 ON mm1.uid_foreign = tta2.uid WHERE tt_address.pid = '.$this->flexConf['storage_pid'].' AND tt_address.tx_kecontacts_type IN (1,2) '.$searchWhereTta.' '.$searchWhereTta2.' '.$this->cObj->enableFields('tt_address');
-			$res = $GLOBALS['TYPO3_DB']->sql_query($sql_query);
-			t3lib_div::debug($sql_query);
-		}
-		
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			$rowCount = 0;
 			
@@ -953,7 +1035,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				
 			}
 		} else {
-			$content = '<strong>Keine Ergebnisse</strong>';
+			$content = '<strong>'.$this->pi_getLL('error_no_results').'</strong>';
 		}
 		
 		return $content;

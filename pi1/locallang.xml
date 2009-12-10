@@ -103,6 +103,7 @@
 			<label index="error_deleting_org_rel">Deletion of related contacts failed.</label>
 			<label index="success_delete">Deletion successfully executed.</label>
 			<label index="delete_button_submitvalue">Confirm deletion</label>
+			<label index="error_no_results">No results</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="list_mode_1">Mode 1</label>
@@ -203,6 +204,7 @@
 			<label index="success_delete">Löschvorgang erfolgreich ausgeführt.</label>
 			<label index="delete_hint">Durch Klicken des unteren Buttons wird der gewählte Kontakt deaktiviert. Handelt es sich um eine Organisation, werden die Verbindungen zu sämtlichen zugeordneten Personen ebenfalls gelöscht, die Personen selbst allerdings bleiben bestehen.</label>
 			<label index="delete_button_submitvalue">Löschen bestätigen</label>
+			<label index="error_no_results">Keine Ergebnisse</label>
 		</languageKey>
 	</data>
 </T3locallang>
