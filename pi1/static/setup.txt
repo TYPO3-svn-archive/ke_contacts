@@ -79,7 +79,7 @@ formFields {
 	birthday {
 		type=birthday
 		required=0
-		validate=date
+		validate=birthday
 	}	
 }
 }

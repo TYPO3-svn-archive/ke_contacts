@@ -1,6 +1,9 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+//Rename label of tt_address field "last_name" permanently as long as "ke_contacts" is installed
+$TCA['tt_address']['columns']['last_name']['label'] = 'LLL:EXT:ke_contacts/locallang_db.xml:tt_address.last_name';
+
 $TCA['tx_kecontacts_comments'] = array (
 	'ctrl' => $TCA['tx_kecontacts_comments']['ctrl'],
 	'interface' => array (

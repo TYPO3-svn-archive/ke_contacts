@@ -30,15 +30,18 @@
                     ###LABEL_BIRTHDAY### ###BIRTHDAY###
                 </div>
             </div>
-            <form name="form_comments" action="###FORMURL###" method="POST" enctype="multipart/form-data">
+			<div><br />###BACKLINK###</div>
+            <!-- ###SUB_COMMENTS### -->
+			<form name="form_comments" action="###FORMURL###" method="POST" enctype="multipart/form-data">
 				<div id="textareaBodySingleView">
 					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
 				</div>
 				<div id="kecontacts-commentSaveButton">
-					<input type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
+					<input class="editSingleView" type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
 				</div>
 			</form>
            ###COMMENTS###
+		   <!-- ###SUB_COMMENTS### -->
         </div>
     </div>    
 </div>
@@ -75,7 +78,9 @@
 					###PERSONS###
                 </div>
             </div>
-            <form name="form_comments" action="###FORMURL###" method="POST" enctype="multipart/form-data">
+			<div><br />###BACKLINK###</div>
+            <!-- ###SUB_COMMENTS### -->
+			<form name="form_comments" action="###FORMURL###" method="POST" enctype="multipart/form-data">
 				<div id="textareaBodySingleView">
 					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
 				</div>
@@ -84,6 +89,7 @@
 				</div>
 			</form>
            ###COMMENTS###
+		   <!-- ###SUB_COMMENTS### -->
         </div>
    
     </div>    
@@ -92,14 +98,10 @@
 
 
 <!-- ###ERROR### begin-->
-<div id="kecontacts-mainContainerSingleView">
-    <div id="kecontacts-subContainerSingleView">
-        <div id="kecontacts-headerContainerSingleView">
-            <div id="kecontacts-leftColumnHeaderSingleView">
-                <div class="bottom">###ERRORTEXT###</div>
-            </div>            
-        </div>
-        <div class="clearer">&nbsp;</div>
+<div id="kecontacts-mainContainerEdit">
+    <div id="kecontacts-subContainerEdit" class="kett_status status_###STATUS###">
+		###ERRORTEXT###
+		###BACKLINK###
 	</div>
 </div>
 <!-- ###ERROR### end-->

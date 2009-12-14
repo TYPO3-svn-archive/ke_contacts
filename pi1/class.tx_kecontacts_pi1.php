@@ -124,7 +124,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//user does not exist, exit with error
 		if(!$GLOBALS['TYPO3_DB']->sql_num_rows($resUserDetails)) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('single_not_found'));
+			$markerArray = array(
+				'ERRORTEXT' => $this->pi_getLL('single_not_found'),
+				'STATUS' => 'fail',
+				'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+			);
 			$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 			return $content;
@@ -137,7 +141,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'LABEL_DELETE' => $this->pi_getLL('delete_label_delete','L&ouml;schen von '),
 			'FIRST_NAME' => $userDetails['first_name'],
 			'LAST_NAME' => $userDetails['last_name'],
-			'HINT' => $this->pi_getLL('delete_hint'),
+			'HINT' => ($userDetails['tx_kecontacts_type'] == 2)?$this->pi_getLL('delete_hint'):'',
 			'DELETE_BUTTON_SUBMITVALUE' => $this->pi_getLL('delete_button_submitvalue'),
 		);
 		
@@ -159,10 +163,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$whereClause .= $this->cObj->enableFields('tt_address');
 		
 		$resUserDetails = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause);
-		
 		//user does not exist, exit with error
 		if(!$GLOBALS['TYPO3_DB']->sql_num_rows($resUserDetails)) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('single_not_found'));
+			$markerArray = array(
+				'ERRORTEXT' => $this->pi_getLL('single_not_found'),
+				'STATUS' => 'fail',
+				'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+			);
 			$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 			return $content;
@@ -176,7 +183,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				//person: disable, comments stay
 				$resDeletePerson = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_address',$whereClause,array('deleted' => 1));
 				if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-					$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_deleting_person'));
+					$markerArray = array(
+						'ERRORTEXT' => $this->pi_getLL('error_deleting_person'),
+						'STATUS' => 'fail',
+						'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+					);
 					$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 					return $content;
@@ -190,7 +201,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				$resDeleteOrg = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_address',$whereClause,array('deleted' => 1));
 				
 				if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-					$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_deleting_org'));
+					$markerArray = array(
+						'ERRORTEXT' => $this->pi_getLL('error_deleting_org'),
+						'STATUS' => 'fail',
+						'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+					);
 					$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 					return $content;
@@ -204,7 +219,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 					$resDeletePersonsRelations = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tt_address_tx_kecontacts_members_mm',$whereClause);
 					
 					if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-						$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_deleting_org_rel'));
+					$markerArray = array(
+						'ERRORTEXT' => $this->pi_getLL('error_deleting_org_rel'),
+						'STATUS' => 'fail',
+						'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+					);
 						$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 						return $content;
@@ -214,7 +233,16 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//success
-		$markerArray = array('ERRORTEXT' => $this->pi_getLL('success_delete'));
+		$successLinkConf = array(
+			'parameter' => $GLOBALS['TSFE']->id,
+			'additionalParams' => '&'.$this->prefixId.'[mode]=list',
+		);
+		
+		$markerArray = array(
+			'ERRORTEXT' => $this->pi_getLL('success_delete'),
+			'STATUS' => 'ok',
+			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+		);
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 		
 		return $content;
@@ -259,6 +287,14 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 						//valid date required
 						$valDate = @explode('.',$formFields[$fieldName]);
 						if(strlen($formFields[$fieldName]) != 10 || !is_array($valDate) || count($valDate) != 3 || !checkdate(intval($valDate[1]),intval($valDate[0]),intval($valDate[2])))
+							$this->formError[$fieldName] = 1;
+					break;
+					case 'birthday':
+						//valid date required
+						$valDate = @explode('.',$formFields[$fieldName]);
+						if(strlen($formFields[$fieldName]) != 10 || !is_array($valDate) || count($valDate) != 3 || !checkdate(intval($valDate[1]),intval($valDate[0]),intval($valDate[2])))
+							$this->formError[$fieldName] = 1;
+						elseif($valDate[2] >= date('Y'));
 							$this->formError[$fieldName] = 1;
 					break;
 					case 'gender':
@@ -310,19 +346,28 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$resDuplicateCheck = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$duplicateWhere);
 		
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resDuplicateCheck)) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_already_exists'));
+			$markerArray = array(
+				'ERRORTEXT' => $this->pi_getLL('error_already_exists'),
+				'STATUS' => 'fail',
+				'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+			);
 			$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 			return $content;
 		}
 		
 		//insert new contact
-		$GLOBALS['TYPO3_DB']->debugOutput = true;
+		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		$resUpdateData = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tt_address',$formFields);
 		$contactId = $GLOBALS['TYPO3_DB']->sql_insert_id();
 		
 		if(!$contactId) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_create'));
+			$markerArray = array(
+				'ERRORTEXT' => $this->pi_getLL('error_create'),
+				'STATUS' => 'fail',
+				'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+			);
+				
 			$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 			return $content;
@@ -341,7 +386,17 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//success
-		$markerArray = array('ERRORTEXT' => $this->pi_getLL('success_create'));
+		$successLinkConf = array(
+			'parameter' => $GLOBALS['TSFE']->id,
+			'additionalParams' => '&'.$this->prefixId.'[mode]=list',
+		);
+		
+		$markerArray = array(
+			'ERRORTEXT' => $this->pi_getLL('success_create'),
+			'STATUS' => 'ok',
+			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+		);
+		
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 		
 		return $content;
@@ -378,13 +433,16 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$bday = explode('.',$this->piVars['birthday']);
 		$formFields['birthday'] = (strlen($formFields['birthday']))?mktime(0,0,0,$bday[1],$bday[0],$bday[2]):0;
 
-		
 		//update and reset timestamp
-		$GLOBALS['TYPO3_DB']->debugOutput = true;
+		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		$resUpdateData = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_address','uid='.$addressId,$formFields);
 		
 		if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_update'));
+			$markerArray = array(
+				'ERRORTEXT' => $this->pi_getLL('error_update'),
+				'STATUS' => 'fail',
+				'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+			);
 			$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 			return $content;
@@ -398,13 +456,17 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			} else {
 				//set new organization for contact - if changed
 				$updateOrg = array('uid_local' => $orgId);
-				$GLOBALS['TYPO3_DB']->debugOutput = true;
+				//$GLOBALS['TYPO3_DB']->debugOutput = true;
 				$resUpdateData = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_address_tx_kecontacts_members_mm','uid_foreign='.$addressId.' AND uid_local ='.$oldOrgId,$updateOrg);
 			}
 			
 			//mysql error occurred
 			if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-				$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_update'));
+				$markerArray = array(
+					'ERRORTEXT' => $this->pi_getLL('error_update'),
+					'STATUS' => 'fail',
+					'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+				);
 				$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 				return $content;
@@ -414,7 +476,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			$insertOrgRel = array('uid_foreign' => $addressId, 'uid_local' => $orgId);
 			$resInsertData = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tt_address_tx_kecontacts_members_mm',$insertOrgRel);
 			if(!$GLOBALS['TYPO3_DB']->sql_affected_rows()) {
-				$markerArray = array('ERRORTEXT' => $this->pi_getLL('error_update'));
+				$markerArray = array(
+					'ERRORTEXT' => $this->pi_getLL('error_update'),
+					'STATUS' => 'fail',
+					'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+				);
 				$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 			
 				return $content;
@@ -422,7 +488,16 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//return
-		$markerArray = array('ERRORTEXT' => $this->pi_getLL('success_update'));
+		$successLinkConf = array(
+			'parameter' => $GLOBALS['TSFE']->id,
+			'additionalParams' => '&'.$this->prefixId.'[mode]=single&tx_kecontacts_pi1[id]='.$addressId,
+		);
+		
+		$markerArray = array(
+			'ERRORTEXT' => $this->pi_getLL('success_update'),
+			'STATUS' => 'ok',
+			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+		);
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 		
 		return $content;
@@ -614,10 +689,12 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$content = '';
 		$userId = intval($this->piVars['id']);
 		
+		if(!$this->flexConf['show_comments']) return $this->pi_getLL('single_comments_deactivated');
+		
 		$whereClause .= ' '.$this->cObj->enableFields('tt_address').' '.$this->cObj->enableFields('tx_kecontacts_comments');
 		$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 		
-		//query comment belongs to (company) or not
+		//comment belongs to company (type = 2) - or not
 		if($type == 2) {
 			$whereClause .= ' AND (tt_address_tx_kecontacts_comments_mm.uid_local = '.$userId.' OR tx_kecontacts_comments.organization = '.$userId.')';
 		} else {
@@ -628,17 +705,31 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resComments)) {
 			while($comment = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resComments)) {				
+				//do not show fe_users username, display first and last name if available
+				$resFeUserName = $GLOBALS['TYPO3_DB']->exec_SELECTquery('first_name,last_name','fe_users','username = "'.$comment['fe_user'].'"'.$this->cObj->enableFields('fe_users'));
+				$feUserComment = '';
+				
+				if($GLOBALS['TYPO3_DB']->sql_num_rows($resFeUserName)) {
+					$feUserName = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resFeUserName);
+					$feUserComment = (strlen($feUserName['first_name']) && strlen($feUserName['last_name']))?$feUserName['first_name'].' '.$feUserName['last_name']:$comment['fe_user'];
+				} else {
+					$feUserComment = $comment['fe_user'];
+				}
+				
+				//fill marker
 				$markerArray = array(
 					'DATE' => date('d.m.Y',$comment['crdate']),
 					'TIME' => date('H:i:s',$comment['crdate']),
-					'COMMENTEDBY' => $comment['fe_user'],
+					'COMMENTEDBY' => $feUserComment,
 					'COMMENTTEXT' => nl2br($comment['comment']),
 					'BELONGSTO' => ($type == 2 && $comment['organization'] != 0)?$this->pi_getLL('single_label_belongsto2').' '.$comment['name']:'',
 				);
 				
+				//html comment
 				$content .= $this->substituteMarkers('###COMMENT###',$markerArray);
 			}
 		} else {
+			//no comments found for this contact
 			$content = 'Keine Kommentare';
 		}
 		
@@ -699,7 +790,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//check for existence of address
 		if(!$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-			$markerArray = array('ERRORTEXT' => $this->pi_getLL('single_not_found'));
+			$markerArray = array(
+						'ERRORTEXT' => $this->pi_getLL('single_not_found'),
+						'STATUS' => 'fail',
+						'BACKLINK' => '<a href ="javascript: window.history.back(1);">'.$this->pi_getLL('back_link').'</a>',
+					);
 			$content = $this->substituteMarkers('###ERROR###',$markerArray);
 			
 			return $content;
@@ -714,6 +809,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 			$whereClause .= ' AND tta2.tx_kecontacts_type = 1';
 			$whereClause .= ' AND tt_address_tx_kecontacts_members_mm.uid_local = '.$userId;
+			$whereClause .= ' AND tta2.deleted = 0 AND tta2.hidden = 0';
 			
 			//querying same table not possible with typo3 db core functions, using the "dirty way" here
 			$resPersons = $GLOBALS['TYPO3_DB']->sql_query('SELECT tta2.* FROM tt_address,tt_address_tx_kecontacts_members_mm,tt_address AS tta2 WHERE tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = tta2.uid '.$whereClause.' ORDER BY tta2.last_name ASC');
@@ -775,6 +871,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			//'useCacheHash' => 'false',
 		);
 		
+		$linkConfBackLink = array(
+			'parameter' => $GLOBALS['TSFE']->id,
+			'additionalParams' => '&'.$this->prefixId.'[mode]=list',
+			'title' => $this->pi_getLL('back_link'),
+			'ATagParams' => 'class="editSingleView"',
+		);
+		
 		//fill markers
 		$gender = ($addressData['gender'] == 'm')?'Herr':'Frau';
 		
@@ -790,7 +893,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'ADDRESS' => $addressData['address'],
 			'ZIP' => $addressData['zip'],
 			'CITY' => $addressData['city'],
-			'COUNTRY' => $addressData['country'],
+			'COUNTRY' => ($addressData['country'] != '0')?$addressData['country']:'',
 			'LABEL_PHONE' => $this->pi_getLL('single_label_phone'),
 			'PHONE' => $addressData['phone'],
 			'LABEL_FAX' => $this->pi_getLL('single_label_fax'),
@@ -807,11 +910,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'COMMENTS' => $this->getComments($addressData['tx_kecontacts_type']),
 			'SINGLE_BUTTON_DELETE' => $this->pi_getLL('single_button_delete'),
 			'SINGLE_BUTTON_UPDATE' => $this->pi_getLL('single_button_update'),
+			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$linkConfBackLink),
 		);
 		
 		//create content
 		$subpart = ($addressData['tx_kecontacts_type'] == 1)?'MAIN_PERSON':'MAIN_ORG';
-		$content = $this->substituteMarkers($subpart,$markerArray);
+		$content_full = $this->substituteMarkers($subpart,$markerArray);
+		$content = (!$this->flexConf['show_comments'])?$this->cObj->substituteSubpart($content_full,'###SUB_COMMENTS###','<br />'.$this->pi_getLL('single_comments_deactivated')):$content_full;
 	
 		return $content;
 	}
@@ -914,7 +1019,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			}
 			
 			//get contacts working for found organizations
-			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.join(',',$relatedList).')');
+			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.join(',',$relatedList).') AND tt_address = 0 AND tt_address.hidden = 0');
 			
 			if($GLOBALS['TYPO3_DB']->sql_num_rows($resRelatedContacts)) {
 				//add contacts only if not already in result list
@@ -998,7 +1103,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$limit[] = $numberOfResultsToDisplay;
 		//execute query
 		
-		$GLOBALS['TYPO3_DB']->debugOutput = true;
+		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		//$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('*','tt_address','tt_address_tx_kecontacts_members_mm','tt_address',$whereClause,'','tt_address.last_name ASC','');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'','tt_address.last_name ASC',join(',',$limit));
 		

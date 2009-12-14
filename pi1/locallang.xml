@@ -55,7 +55,7 @@
 			<label index="edit_label_tx_kecontacts_organisation">Organization</label>
 			<label index="edit_label_gender">Gender</label>
 			<label index="edit_label_first_name">First name</label>
-			<label index="edit_label_last_name">Last name</label>
+			<label index="edit_label_last_name">Last name / Organization</label>
 			<label index="edit_label_tx_kecontacts_function">Function</label>
 			<label index="edit_label_address">Address</label>
 			<label index="edit_label_zip">ZIP</label>
@@ -104,6 +104,8 @@
 			<label index="success_delete">Deletion successfully executed.</label>
 			<label index="delete_button_submitvalue">Confirm deletion</label>
 			<label index="error_no_results">No results</label>
+			<label index="back_link">Back</label>
+			<label index="single_comments_deactivated">Comments diabled.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="list_mode_1">Mode 1</label>
@@ -155,7 +157,7 @@
 			<label index="edit_label_tx_kecontacts_organization">Organisation</label>
 			<label index="edit_label_gender">Geschlecht</label>
 			<label index="edit_label_first_name">Vorname</label>
-			<label index="edit_label_last_name">Nachname</label>
+			<label index="edit_label_last_name">Nachname / Organisation</label>
 			<label index="edit_label_tx_kecontacts_function">Funktion</label>
 			<label index="edit_label_address">Strasse</label>
 			<label index="edit_label_zip">PLZ</label>
@@ -164,8 +166,8 @@
 			<label index="edit_label_email">E-Mail</label>
 			<label index="edit_label_phone">Telefon</label>
 			<label index="edit_label_fax">Fax</label>
+			<label index="edit_label_birthday">Geburtstag (TT.MM.JJJJ)</label>
 			<label index="edit_label_mobile">Handy</label>
-			<label index="edit_label_birthday">Geburtstag</label>
 			<label index="edit_label_tx_kecontacts_type">Kontakttyp</label>
 			<label index="edit_contacts_type_0">Bitte auswählen ...</label>
 			<label index="edit_contacts_type_1">Person</label>
@@ -202,9 +204,11 @@
 			<label index="error_deleting_org">Löschen der Organisation fehlgeschlagen.</label>
 			<label index="error_deleting_org_rel">Löschen von Kontakten der Organisation fehlgeschlagen.</label>
 			<label index="success_delete">Löschvorgang erfolgreich ausgeführt.</label>
-			<label index="delete_hint">Durch Klicken des unteren Buttons wird der gewählte Kontakt deaktiviert. Handelt es sich um eine Organisation, werden die Verbindungen zu sämtlichen zugeordneten Personen ebenfalls gelöscht, die Personen selbst allerdings bleiben bestehen.</label>
+			<label index="delete_hint">Durch Klicken des unteren Buttons wird der gewählte Kontakt gelöscht. Die Verbindungen zu zu sämtlichen zugeordneten Personen werden ebenfalls gelöscht, die Personen selbst allerdings bleiben bestehen.</label>
 			<label index="delete_button_submitvalue">Löschen bestätigen</label>
 			<label index="error_no_results">Keine Ergebnisse</label>
+			<label index="back_link">Zurück</label>
+			<label index="single_comments_deactivated">Kommentare nicht erlaubt.</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -18,6 +18,7 @@
 			<label index="tt_address.tx_kecontacts_type">Type</label>
 			<label index="tx_kecontacts_comments.organization">Organization</label>
 			<label index="tt_address.tx_kecontacts_function">Function</label>
+			<label index="tt_address.last_name">Last name / organization:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tt_content.list_type_pi1">Kontaktverwaltung</label>
@@ -32,6 +33,7 @@
 			<label index="tt_address.tx_kecontacts_type">Typ</label>
 			<label index="tx_kecontacts_comments.organization">Organisation</label>
 			<label index="tt_address.tx_kecontacts_function">Funktion</label>
+			<label index="tt_address.last_name">Nachname / Organisation:</label>
 		</languageKey>
 	</data>
 </T3locallang>
