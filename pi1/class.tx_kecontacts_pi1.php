@@ -722,12 +722,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				}
 				
 				//fill marker
+				$belongsToText = (strlen($comment['name']))?$comment['name']:$comment['first_name'].' '.$comment['last_name'];
 				$markerArray = array(
 					'DATE' => date('d.m.Y',$comment['crdate']),
 					'TIME' => date('H:i:s',$comment['crdate']),
 					'COMMENTEDBY' => $feUserComment,
 					'COMMENTTEXT' => nl2br($comment['comment']),
-					'BELONGSTO' => ($type == 2 && $comment['organization'] != 0)?$this->pi_getLL('single_label_belongsto2').' '.$comment['first_name'].' '.$comment['last_name']:'',
+					'BELONGSTO' => ($type == 2 && $comment['organization'] != 0)?$this->pi_getLL('single_label_belongsto2').' '.$belongsToText:'',
 				);
 				
 				//html comment
