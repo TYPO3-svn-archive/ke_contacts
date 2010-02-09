@@ -1,0 +1,89 @@
+plugin.tx_kecontacts_pi1 {
+formFields {
+	tx_kecontacts_type {
+		type=contacttype
+		required=1
+	}
+	tx_kecontacts_organization {
+		type=organization
+		required=0
+		validate=
+	}
+	gender {
+		type=gender
+		values = m,f
+		required=1
+		validate=gender
+	}
+	title {
+		type=input
+		required=0
+		validate=
+	}
+	first_name {
+		type=input
+		required=0
+		validate=
+	}
+	last_name {
+		type=input
+		required=1
+		validate=
+	}
+	tx_kecontacts_function {
+		type=input
+		required=0
+		validate=
+	}
+	address {
+		type=input
+		required=1
+		validate=
+	}
+	zip {
+		type=input
+		required=1
+		validate=int
+	}
+	city {
+		type=input
+		required=1
+		validate=
+	}
+	country {
+		type=country
+		value=static_info_tables
+		required=1
+		validate=nocountry
+	}
+	email {
+		type=input
+		required=1
+		validate=email
+	}
+	phone {
+		type=input
+		required=0
+		validate=
+	}
+	mobile {
+		type=input
+		required=0
+		validate=
+	}
+	fax {
+		type=input
+		required=0
+		validate=
+	}
+	birthday {
+		type=birthday
+		required=0
+		validate=birthday
+	}	
+}
+listview.sort {
+	dbfield = tt_address.last_name
+	sort = ASC
+}
+}

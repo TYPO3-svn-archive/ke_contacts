@@ -1,0 +1,422 @@
+.clearer{
+	clear: both;
+	line-height: 1px;
+	font-size: 1px;
+	overflow: hidden;
+}
+
+
+.tx-kecontacts-pi1{
+	/*border:1px solid #ff0000;
+	margin:0;
+	padding:0;*/
+}
+
+.tx-kecontacts-pi1 *{
+    font-family:Verdana;
+}
+.tx-kecontacts-pi1 form{
+	/*position:absolute;
+	padding:0;
+	margin:0;
+	border: 1px solid #0000ff;*/
+}
+
+.tx-kecontacts-pi1 #hauptform{
+	margin:15px 0 0 0;
+	padding:0;
+}
+
+.tx-kecontacts-pi1 th,
+.tx-kecontacts-pi1 tbody td,
+.tx-kecontacts-pi1 td{
+	background-color: #e8e8e8;
+}
+.tx-kecontacts-pi1 table#kontakt_tabele{
+	margin: 10px 0 10px 0;
+  width:100%;
+}
+.tx-kecontacts-pi1 A.editSingleView,.tx-kecontacts-pi1 A.deleteSingleView {
+	padding: 5px;
+	text-decoration: none;
+	display:block;
+}
+
+.tx-kecontacts-pi1 .ke-contacts-list-pages {
+	width: 50px;
+}
+
+A.editSingleView,
+A.deleteSingleView{
+	background-color: #a7a599;
+	border: 1px solid white;
+	font-size: 11px;
+	color: white;
+	cursor: pointer;
+	float:left;
+}
+A:hover.editSingleView,
+A:hover.deleteSingleView{
+	color:#fff;
+	background-color: #a7a599;
+}
+
+/*LISTVIEW*/
+.tx-kecontacts-pi1 #kecontacts-linkHeaderContainerListview a:hover,
+.tx-kecontacts-pi1 #kecontacts-linkHeaderContainerListview a:active,
+.tx-kecontacts-pi1 #kecontacts-linkHeaderContainerListview a:focus{
+	color: #646464;
+	text-decoration: underline;
+}
+.tx-kecontacts-pi1 #kecontacts-listContainerListview{
+  /*background-image: url("http://kennziffer.intranet/development/bernd/wiff/cms/typo3conf/ext/ke_contacts/res/img/background.gif");
+  background-repeat: repeat-y;*/
+	min-height: 100%;
+}
+.tx-kecontacts-pi1 #kecontacts-subMainContainerListview{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+/*HEADER LISTVIEW*/
+.tx-kecontacts-pi1 .headerListView{
+	background:#DADADA url(../img/css_gradient1.gif) repeat-x scroll left top;
+	border:1px solid #353535;
+	margin:0 0 5px;
+	overflow:hidden;
+	padding:5px 5px 4px;
+	width:auto;
+}
+
+.tx-kecontacts-pi1 .headerListView select{
+	margin-left: 70px;
+	height:22px;
+	padding-top: 2px;
+}
+
+.tx-kecontacts-pi1 .headerListView a{
+	margin-left:5px;
+	padding-left:20px;
+	padding-bottom:10px;
+	font-size:11px;
+	font-weight: bold;
+	color:#000;
+	text-decoration: none;
+	background-image:url(../img/icon_new_ticket.png);
+	background-repeat:no-repeat;
+}
+.tx-kecontacts-pi1 .headerListView a:hover{
+	text-decoration: none;
+	color: #4D87C7;
+}
+.tx-kecontacts-pi1 .headerListView input{
+	height: 20px;
+	background-color: white;
+	color: black;
+	padding: 0 0 0 5px;
+	border: 1px solid #A0A09E;
+	vertical-align: top;
+}
+.tx-kecontacts-pi1 .headerListView input.searchButtonListView{
+	height: 22px;
+	margin-left: 4px;
+	margin-right: 0px;
+	background-color: #A0A09E;
+	border: 1px solid white;
+	color: white;
+	font-size: 11px;
+	cursor: pointer;
+	padding:0px 5px 3px 5px;
+}
+
+#kecontacts-subContainerEdit a{
+	color:#fff;
+}
+
+/*BODY LISTVIEW HEADER*/
+.tx-kecontacts-pi1 .bodyListViewHeader{
+  /*background-image:url(../img/list_item_userhead_bg_norma.gif);*/
+	height:25px;	
+}
+
+.tx-kecontacts-pi1 .bodyListViewHeader td{
+	background-image:url(../img/list_item_userhead_bg_norma.gif);
+	background-repeat: repeat-x;
+	padding:0 0 0 5px;
+	margin:0;
+	height:10px;
+}
+
+.tx-kecontacts-pi1 .bodyListViewHeader p{
+	height:20px;
+	font-weight:bold;
+}
+
+.tx-kecontacts-pi1 .lastCell{
+	/*border-left: hidden !important;*/
+}
+.tx-kecontacts-pi1 .firstCellHeaderList{
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+.tx-kecontacts-pi1 .firstCellHeaderList p{
+	width: 250px;
+}
+
+.tx-kecontacts-pi1 .secondCellHeaderList{
+	margin-top: 0px;
+	margin-left: 0px;
+}
+.tx-kecontacts-pi1 .thirdCellHeaderList{
+	margin-left: 0px;
+}
+.tx-kecontacts-pi1 .thirdCellHeaderList p{
+	width: 160px;
+	margin-bottom: 0px;
+}
+/*BODY LISTVIEW BODY*/
+.tx-kecontacts-pi1 .firstRowBodyList td{
+	background-color: #e8e8e8;
+}
+.tx-kecontacts-pi1 .secondRowBodyList td{    
+	background-color: #DBDBDB;
+}
+
+.tx-kecontacts-pi1 .firstCellBodyList{
+  /*margin-left: 7px;*/
+}
+.tx-kecontacts-pi1 #kecontacts-secondCellBodyListContainer{
+	border-left:1px solid white;
+	border-right: 1px solid white;
+}
+.tx-kecontacts-pi1 .secondCellBodyList{
+  /*margin-left: 7px;*/
+}
+.tx-kecontacts-pi1 .thirdCellBodyList{
+   /* margin-left: 7px;*/
+}
+.tx-kecontacts-pi1 #kecontacts-forthCellBodyListContainer{
+	width: 50px;
+}
+
+.tx-kecontacts-pi1 .forthCellBodyList a{
+	text-decoration: none;
+}
+/*FOOTER LISTVIEW*/
+.tx-kecontacts-pi1 .footer td{
+	border-left: #f2f2f2;
+	border-right: #f2f2f2;
+	/*border-bottom: #f2f2f2;*/
+	background-color: #f2f2f2;
+}
+.tx-kecontacts-pi1 .footer td.footerlastCell{
+	width: 200px;
+	text-align: right;
+	padding-left: 80px;
+}
+.tx-kecontacts-pi1 .footer .footerlastCell select{
+	
+}
+/*SINGLEVIEW*/
+.tx-kecontacts-pi1 #kecontacts-mainContainerSingleView{
+	/*background-image: url("http://kennziffer.intranet/development/bernd/wiff/cms/typo3conf/ext/ke_contacts/res/img/background.gif");
+	background-repeat: repeat-y;*/
+	min-height: 100%;
+}
+.tx-kecontacts-pi1 #kecontacts-subContainerSingleView{
+	width:100%
+}
+
+.tx-kecontacts-pi1 #kecontacts-bodySingleView{
+	position:relative;
+	top:0px;
+	padding:0;
+}
+
+/*HEADER SINGLEVIEW*/
+.tx-kecontacts-pi1 #kecontacts-headerContainerSingleView{
+	width: inherit;
+	margin:0;
+	padding:0 0 0 5px;
+	height:35px;
+}
+.tx-kecontacts-pi1 #kecontacts-leftColumnHeaderSingleView{
+	margin:10px 0 0 0;
+	padding:0;
+    
+}
+
+.tx-kecontacts-pi1 #singleview_header{
+	margin:45px 0 0 0px;
+	padding-left:10px;
+	background-image:url(../img/list_item_head_bg_normal.gif);
+	height:25px;
+}
+
+.tx-kecontacts-pi1 #kecontacts-leftColumnHeaderSingleView .bottom{
+	margin-top: 0px;
+	margin-left: 10px;
+	font-size: 13px;
+	font-weight: bold;
+}
+.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView{
+	float: left;
+	text-align: left;
+	margin-top: 10px;
+}
+
+.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input{
+	margin-bottom: 10px;
+}
+.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input.deleteSingleView{
+	width: 60px;
+	height: 22px;
+	padding-bottom: 3px;
+}
+.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input.editSingleView{
+	width: 120px;
+	height: 22px;
+	padding-bottom: 3px;
+}
+/*BODY SINGLEVIEW*/
+.tx-kecontacts-pi1 #kecontacts-subBodySingleView{
+}
+
+.tx-kecontacts-pi1 #kecontacts-masterDataSingleView{
+	padding: 5px 10px 5px 10px;
+}
+
+.tx-kecontacts-pi1 #comments_form{
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+.tx-kecontacts-pi1 #textareaBodySingleView{
+	border: 1px solid black;
+	margin-top: 20px;
+
+}
+.tx-kecontacts-pi1 #textareaBodySingleView textarea{
+	width: 395px;
+	height: 100px;
+}
+.tx-kecontacts-pi1 #kecontacts-commentSaveButton{
+	margin-top: 10px;
+	text-align: right;
+}
+.tx-kecontacts-pi1 #kecontacts-commentSaveButton input{
+	background-color: #a7a599;
+	border: 1px solid white;
+	font-size: 11px;
+	color: white;
+	cursor: pointer;
+	padding:5px;
+}
+
+.tx-kecontacts-pi1 .kecontacts-commentsArea{
+	margin-top: 10px;
+	margin-bottom: 20px;
+	padding: 5px 5px 5px 5px;
+	font-style: italic;
+	font-size: 10px;
+}
+.tx-kecontacts-pi1 .kecontacts-commentsArea .header{
+	width: 100%;
+	font-size: 11px;
+	font-weight: bold;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin-bottom: 5px;
+}
+/*EDIT*/
+.tx-kecontacts-pi1  #kecontacts-subContainerEdit{
+	padding-bottom: 10px;
+}
+.tx-kecontacts-pi1 .fieldset {
+	padding: 0px 0 5px 0;
+}
+
+.tx-kecontacts-pi1 #kecontacts_type {
+}
+
+.tx-kecontacts-pi1 #kecontacts_organization{
+	
+}
+
+
+.tx-kecontacts-pi1 .fieldset label {
+	display:block;
+	width: 200px;
+	float: left;
+	font-weight: bold;
+	/*border:1px solid #00ff00;*/
+}
+.tx-kecontacts-pi1 .field {
+	float:left;
+}
+.tx-kecontacts-pi1 .field input{
+	color: black;
+	background-color: white;
+	width: 230px;
+	border: 1px solid #A0A09E;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+}
+
+.tx-kecontacts-pi1 #kecontacts_gender{
+	
+}
+.tx-kecontacts-pi1 #kecontacts_gender .field input{
+	width: 20px;
+}
+.tx-kecontacts-pi1 #kecontacts_plz .field input{
+	width: 40px;
+}
+.tx-kecontacts-pi1 select {
+	width: 234px;
+	border: 1px solid #A0A09E;
+}
+.tx-kecontacts-pi1 .error {
+	float: left;
+	color: red;
+	font-style: italic;
+	margin: 0 0 0 5px;
+}
+.tx-kecontacts-pi1 #kecontacts_editButton{
+	background-color:#A7A599;
+	border:1px solid white;
+	color:white;
+	cursor:pointer;
+	font-size:11px;
+	padding:5px;
+}
+
+.tx-kecontacts-pi1 A.linkTextHeader {
+	font-weight: bold; 
+}
+
+/* error output, same layout as ke_troubletickets */
+.tx-kecontacts-pi1 .status_ok {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#33C92F url(../img/status_message_bgr.gif) repeat-x scroll left top;
+	border:1px solid #025600;
+}
+
+.tx-kecontacts-pi1 .status_fail {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#E44832 url(../img/error_bg.gif) repeat-x scroll left top;
+	border:1px solid #025600;
+}
+
+.tx-kecontacts-pi1 .kett_status {
+	font-size:12px;
+	font-weight:bold;
+	margin:0 0 5px;
+	padding:5px;
+}

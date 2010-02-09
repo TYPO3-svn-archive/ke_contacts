@@ -1,0 +1,128 @@
+<!-- ###MAIN_PERSON### begin-->
+<div id="kecontacts-mainContainerSingleView">
+    <div id="kecontacts-subContainerSingleView">
+
+        <div id="kecontacts-leftColumnHeaderSingleView">
+		<div class="bottom">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</div>
+        </div>
+        <!--<div class="clearer">&nbsp;</div>-->
+        <div id="kecontacts-bodySingleView">
+            <div id="kecontacts-subBodySingleView" >
+                <div id="kecontacts-masterDataSingleView">
+                    ###FUNCTION###<br/>
+		    <br/><br/>
+		    ###LABEL_BELONGSTO### ###ORGANIZATION###<br/>
+                    <br/>
+                    ###ADDRESS###<br/>
+                    ###ZIP### ###CITY###<br/>
+                    ###COUNTRY###<br/>
+                    <br/>
+                    ###LABEL_PHONE### ###PHONE###<br/>
+                    ###LABEL_FAX### ###FAX###<br/>
+                    ###LABEL_MOBILE### ###MOBILE###<br/>
+                    ###LABEL_EMAIL### ###E-MAIL###<br/>
+                    <br/>
+                    ###LABEL_BIRTHDAY### ###BIRTHDAY###
+                </div>
+            </div>
+		    <div id="kecontacts-headerContainerSingleView">
+			<form name="form_editdelete" action="#" method="post" enctype="multipart/form-data">
+				<div id="kecontacts-rightColumnHeaderSingleView">
+					###DELETELINK###
+					###EDITLINK###
+				</div>
+			  </form>
+		      <div style="float:right; margin-top:10px">###BACKLINK###</div>
+		    </div>
+
+            <!-- ###SUB_COMMENTS### -->
+			<form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
+				<div id="textareaBodySingleView">
+					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+				</div>
+				<div id="kecontacts-commentSaveButton">
+					<input class="editSingleView" type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
+				</div>
+			</form>
+	    <div style="margin:5px 0 0 5px">###COMMENTS###</div>
+		   <!-- ###SUB_COMMENTS### -->
+        </div>
+	<!--<div id="kecontacts-headerContainerSingleView" style="border:1px solid #00ff00;">
+              <form name="form_editdelete" action="#" method="POST" enctype="multipart/form-data">
+                <div id="kecontacts-rightColumnHeaderSingleView">
+					haha###DELETELINK###
+					###EDITLINK###
+                </div>
+			  </form>
+        </div>-->
+    </div>
+</div>
+<!-- ###MAIN_PERSON### end-->
+
+<!-- ###MAIN_ORG### begin-->
+<div id="kecontacts-mainContainerSingleView">
+    <div id="kecontacts-subContainerSingleView">
+	<div id="kecontacts-leftColumnHeaderSingleView">
+                <div class="bottom">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</div>
+            </div>
+        <!--<div class="clearer">&nbsp;</div>-->
+        <div id="kecontacts-bodySingleView">
+            <div id="kecontacts-subBodySingleView">
+                <div id="kecontacts-masterDataSingleView">
+                    ###ADDRESS###<br/>
+                    ###ZIP### ###CITY###<br/>
+                    ###COUNTRY###<br/>
+                    <br/>
+                    ###LABEL_PHONE### ###PHONE###<br/>
+                    ###LABEL_FAX### ###FAX###<br/>
+                    ###LABEL_MOBILE### ###MOBILE###<br/>
+                    ###LABEL_EMAIL### ###E-MAIL###<br/>
+                    <br/>
+                    ###LABEL_PERSONS###<br />
+					###PERSONS###
+                </div>
+            </div>
+	    <div id="kecontacts-headerContainerSingleView">
+                 <form name="form_editdelete" action="#" method="post" enctype="multipart/form-data">
+				<div id="kecontacts-rightColumnHeaderSingleView">
+                    ###DELETELINK###
+					###EDITLINK###
+					<div class="clearer">&nbsp;</div>
+                </div>
+		</form>
+		<div style="float:right; margin-top:10px">###BACKLINK###</div>
+	    </div>
+
+            <!-- ###SUB_COMMENTS### -->
+			<form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
+				<div id="textareaBodySingleView">
+					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+				</div>
+				<div id="kecontacts-commentSaveButton">
+					<input type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
+				</div>
+			</form>
+            ###COMMENTS###
+		   <!-- ###SUB_COMMENTS### -->
+        </div>
+
+    </div>
+</div>
+<!-- ###MAIN_ORG### end-->
+
+
+<!-- ###ERROR### begin-->
+<div id="kecontacts-mainContainerEdit">
+    <div id="kecontacts-subContainerEdit" class="kett_status status_###STATUS###">
+		###ERRORTEXT###
+		###BACKLINK###
+	</div>
+</div>
+<!-- ###ERROR### end-->
+
+<!-- ###COMMENT### begin-->
+<div class="kecontacts-commentsArea">
+    <div class="header">###DATE###, ###COMMENTEDBY### ###BELONGSTO###</div>
+    ###COMMENTTEXT###
+</div>
+<!-- ###COMMENT### end-->

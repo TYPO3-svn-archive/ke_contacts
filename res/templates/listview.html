@@ -1,0 +1,94 @@
+<!--###LISTVIEW### begin-->
+<form name="tx_kecontactssearchform" id="hauptform" action="###FORMURL###" method="post" enctype="multipart/form-data">
+    
+                <div class="headerListView">
+                   ###CREATENEWCONTACT###
+                    <select name="tx_kecontacts_pi1[headerDropDown]">
+                    ###FILTER1_OPTIONS###
+                    </select>
+                    <input name="tx_kecontacts_pi1[sword]"  type="text" size="25" value="###SEARCHPHRASE###" onclick="if(this.value == this.defaultValue) this.value = '';" />
+                    <input class="searchButtonListView"type="submit" value="Los"/>
+                </div>
+
+        <table id="kontakt_tabele">
+        <tr class="bodyListViewHeader">
+        <td>
+            <p class="firstCellHeaderList">###LIST_HEADER1###</p>
+        </td>
+        <td>
+            <p class="secondCellHeaderList">###LIST_HEADER2###</p>
+        </td>
+        <td>
+            <p class="thirdCellHeaderList">###LIST_HEADER3###</p>
+        </td>
+        <td class="lastCell"><p class="forthCellHeaderList">&nbsp;</p>
+        </td>
+        </tr>   ###ITEMS### 
+        <tr class="footer">
+            <td>
+                <div id="kecontacts-pageCounterListView">
+                ###PAGECOUNT###
+                </div>
+            </td>
+        <td></td>
+        <td class="footerlastCell" colspan="2">
+        ###GOTOPAGE###
+        <select class="ke-contacts-list-pages" onchange="this.form.submit()" name="tx_kecontacts_pi1[pointer]">
+            ###PAGES_OPTIONS###
+        </select>
+        </td>
+        </tr>	
+    </table>
+</form>
+<!--###LISTVIEW### end-->
+
+
+<!--###ITEM### begin-->
+<tr class="###HIGHLIGHTROW###">
+	<td class="kecontacts-firstCellBodyListContainer">
+		<div class="firstCellBodyList">
+			<p>###LAST_NAME### ###FIRST_NAME### ###TITLE### <br/>###ORGANISATION###</p>
+        </div>
+    </td>
+    <td class="kecontacts-secondCellBodyListContainer">
+        <div class="secondCellBodyList">
+            <p>###ADDRESS###<br/>###ZIP### ###CITY###</p>
+        </div>
+    </td>
+    <td class="kecontacts-thirdCellBodyListContainer">
+        <div class="thirdCellBodyList">
+            <p>###TELEPHONE###<br/>###EMAIL###<br/>###WWW###</p>
+        </div>
+    </td>
+    <td class="kecontacts-forthCellBodyListContainer">
+        <div class="forthCellBodyList">
+            ###EDIT_ICON###
+        </div>
+    </td>
+</tr>
+<!--###ITEM### end-->
+
+<!--###ITEM_COMPANY### begin-->
+<tr class="###HIGHLIGHTROW###" style="###HIGHLIGHTROWSTYLE###">
+	<td class="kecontacts-firstCellBodyListContainer" style="background-color: ###HIGHLIGHTROWCOLOR###!important;">
+		<div class="firstCellBodyList">
+			<p>###LAST_NAME### ###FIRST_NAME### ###TITLE### <br/>###ORGANISATION###</p>
+        </div>
+    </td>
+    <td class="kecontacts-secondCellBodyListContainer" style="background-color: ###HIGHLIGHTROWCOLOR###!important;">
+        <div class="secondCellBodyList">
+            <p>###ADDRESS###<br/>###ZIP### ###CITY###</p>
+        </div>
+    </td>
+    <td class="kecontacts-thirdCellBodyListContainer" style="background-color: ###HIGHLIGHTROWCOLOR###!important;">
+        <div class="thirdCellBodyList">
+            <p>###TELEPHONE###<br/>###EMAIL###<br/>###WWW###</p>
+        </div>
+    </td>
+    <td class="kecontacts-forthCellBodyListContainer" style="background-color: ###HIGHLIGHTROWCOLOR###!important;">
+        <div class="forthCellBodyList">
+            ###EDIT_ICON###
+        </div>
+    </td>
+</tr>
+<!--###ITEM_COMPANY### end-->

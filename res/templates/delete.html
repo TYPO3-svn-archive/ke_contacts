@@ -1,0 +1,28 @@
+<!--###DELETEVIEW### begin-->
+<div id="kecontacts-mainContainerListview">
+    <div id="kecontacts-subMainContainerListview">
+		<form name="tx_indexedsearchform" action="###FORMURL###" method="post" enctype="multipart/form-data">
+        <div id="kecontacts-headerContainerListview">
+                ###LABEL_DELETE### <strong>###FIRST_NAME### ###LAST_NAME###</strong>?<br />
+                <br />
+				<div>###HINT###</div>
+				<br />
+				<div><input type="submit" name="tx_kecontacts_pi1[deleteButton]" value="###DELETE_BUTTON_SUBMITVALUE###" /></div>
+		</div>
+		</form>
+    </div>
+</div>
+<!--###DELETEVIEW### end-->
+
+<!-- ###SUB_CHECKBOX_ROW### start -->
+        <input type="checkbox" name="###NAME###" value="###VALUE###" ###CHECKED###>&nbsp;###LABEL###<br />
+<!-- ###SUB_CHECKBOX_ROW### end -->
+
+<!-- ###GENERAL_ERROR### begin-->
+<div id="kecontacts-mainContainerEdit">
+    <div id="kecontacts-subContainerEdit" class="kett_status status_###STATUS###">
+		###ERRORTEXT###
+		###BACKLINK###
+	</div>
+</div>
+<!-- ###GENERAL_ERROR### end -->
