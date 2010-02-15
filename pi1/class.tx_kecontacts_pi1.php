@@ -83,8 +83,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				$this->piVars[$filterSettingVar] = $GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']');
 			}
 		}
-
-		t3lib_div::debug($this->piVars);
 		
 		//switch to required plugin mode
 		switch(t3lib_div::removeXSS($this->piVars['mode'])) {
@@ -354,7 +352,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//unset fields which are not needed for update query
-		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function');
+		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function','sword','headerDropDown');
 		foreach($unsetFields as $unsetField)
 			unset($formFields[$unsetField]);
 		
@@ -446,7 +444,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//unset fields which are not needed for update query
-		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function');
+		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function','sword','headerDropDown');
 		foreach($unsetFields as $unsetField)
 			unset($formFields[$unsetField]);
 		
