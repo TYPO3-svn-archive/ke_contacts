@@ -67,6 +67,25 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$this->addCssToPage();
 		//$GLOBALS['TSFE']->pSetup['bodyTagAdd'] = 'onload="javascript: changeType('.$this->piVars['tx_kecontacts_type'].'); return false;"';
 		
+		//store filter settings in sessions
+		if(isset($this->piVars['headerDropDown']) || isset($this->piVars['sword']) || isset($this->piVars['pointer'])) {
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[pointer]', t3lib_div::removeXSS($this->piVars['pointer']));
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[sword]', t3lib_div::removeXSS($this->piVars['sword']));
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[headerDropDown]', t3lib_div::removeXSS($this->piVars['headerDropDown']));
+			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		}
+		
+		//set piVar filter settings to session filter settings
+		$filterSettingVars = array('pointer','sword','headerDropDown');
+		
+		foreach($filterSettingVars as $filterSettingVar) {
+			if($GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']')) {
+				$this->piVars[$filterSettingVar] = $GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']');
+			}
+		}
+
+		t3lib_div::debug($this->piVars);
+		
 		//switch to required plugin mode
 		switch(t3lib_div::removeXSS($this->piVars['mode'])) {
 			case 'edit':
@@ -1020,7 +1039,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$relatedContacts = array();
 
 		//filter organizations to display contacts working for organization
-		if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {			
+		if(@$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {			
 			while($addressRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$itemList[$addressRow['uid']] = $addressRow;
 					
@@ -1033,7 +1052,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			//get contacts working for found organizations
 			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.join(',',$relatedList).') AND tt_address.deleted = 0 AND tt_address.hidden = 0');
 			
-			if($GLOBALS['TYPO3_DB']->sql_num_rows($resRelatedContacts)) {
+			if(@$GLOBALS['TYPO3_DB']->sql_num_rows($resRelatedContacts)) {
 				//add contacts only if not already in result list
 				while($relatedContacts = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resRelatedContacts)) {
 					if(!array_key_exists($relatedContact['uid'],$itemList)) $itemList[$relatedContacts['uid']] = $relatedContacts;
@@ -1110,7 +1129,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		return $content;
 	}
 	
-	function getData() {
+	function getData() {		
 		//get filter from piVars
 		$typeFilter = intval($this->piVars['headerDropDown']);
 		$searchWord = t3lib_div::removeXSS($this->piVars['sword']);
@@ -1145,7 +1164,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'',$orderByField.' '.$orderByOrder,join(',',$limit));
 
-		if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+		if(@$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			$rowCount = 0;
 			
 			while($addressRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -1162,7 +1181,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				//get company of a person - do it in a nicer way later on
 				if($addressRow['tx_kecontacts_type'] == 1) {
 					$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tt_address.last_name','tt_address,tt_address_tx_kecontacts_members_mm','tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = '.$addressRow['uid'].' '.$this->cObj->enableFields('tt_address'));
-					if($GLOBALS['TYPO3_DB']->sql_num_rows($resCompany)) {
+					if(@$GLOBALS['TYPO3_DB']->sql_num_rows($resCompany)) {
 						$arrCompany = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resCompany);
 						$company = $arrCompany['last_name'];
 					} else {
