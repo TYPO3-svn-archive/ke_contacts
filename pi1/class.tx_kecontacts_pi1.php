@@ -88,6 +88,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			}
 		}
 		
+		//check for prerequisites
 		if(!isset($this->conf['formFields.'])) {
 			die('Configuration error: Please include TS-Template!');
 		} elseif(!t3lib_extMgm::isLoaded('static_info_tables_de')) {
@@ -148,7 +149,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function filterInput() {
 		foreach($this->piVars as $piKey => $piValue) {
-			$this->cleanPiVars[$piKey] = t3lib_div::removeXSS(htmlentities($piValue,ENT_QUOTES,'UTF-8'));
+			$this->cleanPiVars[$piKey] = t3lib_div::removeXSS($piValue);
 		}
 	}
 	
@@ -378,7 +379,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//unset fields which are not needed for update query
-		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function','sword','headerDropDown');
+		$unsetFields = array('id','submit','mode','pointer','tx_kecontacts_organization','function','sword','headerDropDown');
 		foreach($unsetFields as $unsetField)
 			unset($formFields[$unsetField]);
 		
@@ -470,7 +471,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//unset fields which are not needed for update query
-		$unsetFields = array('id','submit','mode','tx_kecontacts_organization','function','sword','headerDropDown');
+		$unsetFields = array('id','submit','mode','pointer','tx_kecontacts_organization','function','sword','headerDropDown');
 		foreach($unsetFields as $unsetField)
 			unset($formFields[$unsetField]);
 		
