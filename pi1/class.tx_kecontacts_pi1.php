@@ -48,6 +48,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	var $tmpl = '';
 	var $numberOfPages = 0;
 	var $formError = array();
+	var $cleanPiVars = array();
 	
 	/**
 	 * The main method of the PlugIn
@@ -67,11 +68,14 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$this->addCssToPage();
 		//$GLOBALS['TSFE']->pSetup['bodyTagAdd'] = 'onload="javascript: changeType('.$this->piVars['tx_kecontacts_type'].'); return false;"';
 		
+		//filter user input
+		$this->filterInput();
+		
 		//store filter settings in sessions
-		if(isset($this->piVars['headerDropDown']) || isset($this->piVars['sword']) || isset($this->piVars['pointer'])) {
-			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[pointer]', t3lib_div::removeXSS($this->piVars['pointer']));
-			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[sword]', t3lib_div::removeXSS($this->piVars['sword']));
-			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[headerDropDown]', t3lib_div::removeXSS($this->piVars['headerDropDown']));
+		if(isset($this->cleanPiVars['headerDropDown']) || isset($this->cleanPiVars['sword']) || isset($this->cleanPiVars['pointer'])) {
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[pointer]', $this->cleanPiVars['pointer']);
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[sword]', $this->cleanPiVars['sword']);
+			$GLOBALS['TSFE']->fe_user->setKey('ses',$this->prefixId.'[headerDropDown]', $this->cleanPiVars['headerDropDown']);
 			$GLOBALS['TSFE']->fe_user->storeSessionData();
 		}
 		
@@ -80,7 +84,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		foreach($filterSettingVars as $filterSettingVar) {
 			if($GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']')) {
-				$this->piVars[$filterSettingVar] = $GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']');
+				$this->cleanPiVars[$filterSettingVar] = $GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId.'['.$filterSettingVar.']');
 			}
 		}
 		
@@ -91,13 +95,14 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//switch to required plugin mode
-		switch(t3lib_div::removeXSS($this->piVars['mode'])) {
+		switch($this->cleanPiVars['mode']) {
 			case 'edit':
 				//edit contact
 				$GLOBALS['TSFE']->setJS($this->prefixId.'_js',$this->addJavascript());
-				if($this->piVars['submit'] && $this->validateFields()) {
+				if($this->cleanPiVars['submit'] && $this->validateFields()) {
 					$statusContent = $this->updateRecord();
 					unset($this->piVars);
+					unset($this->cleanPiVars);
 					$content = $this->renderListView($statusContent);
 				} else
 					$content = $this->renderCreateView(true);
@@ -105,25 +110,27 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			case 'create':
 				//create contact
 				$GLOBALS['TSFE']->setJS($this->prefixId.'_js',$this->addJavascript());
-				if($this->piVars['submit'] && $this->validateFields()) {
+				if($this->cleanPiVars['submit'] && $this->validateFields()) {
 					$statusContent = $this->saveRecord();
 					unset($this->piVars);
+					unset($this->cleanPiVars);
 					$content = $this->renderListView($statusContent);
 				} else
 					$content = $this->renderCreateView();
 			break;
 			case 'single':
 				//view single contact
-				if(isset($this->piVars['commentButton']) && strlen($this->piVars['comment'])) {
+				if(isset($this->cleanPiVars['commentButton']) && strlen($this->cleanPiVars['comment'])) {
 					$this->addComment();
 				}
 				$content = $this->renderSingleView();
 			break;
 			case 'delete':
 				//delete contact
-				if(isset($this->piVars['deleteButton'])) {
+				if(isset($this->cleanPiVars['deleteButton'])) {
 					$statusContent = $this->deleteContact();
 					unset($this->piVars);
+					unset($this->cleanPiVars);
 					$content = $this->renderListView($statusContent);
 				} else {
 					$content = $this->renderDeleteView();
@@ -139,9 +146,15 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		return $this->pi_wrapInBaseClass($content);
 	}
 	
+	function filterInput() {
+		foreach($this->piVars as $piKey => $piValue) {
+			$this->cleanPiVars[$piKey] = t3lib_div::removeXSS(htmlentities($piValue,ENT_QUOTES,'UTF-8'));
+		}
+	}
+	
 	function renderDeleteView() {
 		$content = '';
-		$contactId = intval($this->piVars['id']);
+		$contactId = intval($this->cleanPiVars['id']);
 		
 		//try to get user details needed for deletion
 		$whereClause .= 'tt_address.pid = '.$this->flexConf['storage_pid'];
@@ -184,7 +197,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function deleteContact() {
 		$content = '';
-		$contactId = intval($this->piVars['id']);
+		$contactId = intval($this->cleanPiVars['id']);
 		
 		//try to get user details needed for deletion
 		$whereClause .= 'tt_address.pid = '.$this->flexConf['storage_pid'];
@@ -283,8 +296,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$this->formError = array();
 		
 		$fieldConf = t3lib_div::removeDotsFromTs($this->conf['formFields.']);
-		$formFields = $this->piVars;
-		$mode = intval($this->piVars['tx_kecontacts_type']);
+		$formFields = $this->cleanPiVars;
+		$mode = intval($this->cleanPiVars['tx_kecontacts_type']);
 		
 		//filter user input
 		foreach($formFields as $fieldName => $fieldValue) {
@@ -353,9 +366,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	function saveRecord() {
 		//prepare values for update
 		$content = '';
-		$formFields = $this->piVars;
+		$formFields = $this->cleanPiVars;
 		$orgId = intval($formFields['tx_kecontacts_organization']);
-		$addressId = intval($this->piVars['id']);
+		$addressId = intval($this->cleanPiVars['id']);
 		$formFields['tstamp'] = time();
 		$formFields['pid'] = $this->flexConf['storage_pid'];
 		
@@ -370,7 +383,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			unset($formFields[$unsetField]);
 		
 		//transform birthday to timestamp
-		$bday = explode('.',$this->piVars['birthday']);
+		$bday = explode('.',$this->cleanPiVars['birthday']);
 		$formFields['birthday'] = (strlen($formFields['birthday']))?mktime(0,0,0,$bday[1],$bday[0],$bday[2]):0;
 		
 		//check for duplicate contacts
@@ -437,9 +450,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	function updateRecord() {
 		//prepare values for update
 		$content = '';
-		$formFields = $this->piVars;
+		$formFields = $this->cleanPiVars;
 		$orgId = intval($formFields['tx_kecontacts_organization']);
-		$addressId = intval($this->piVars['id']);
+		$addressId = intval($this->cleanPiVars['id']);
 		$formFields['tstamp'] = time();
 		
 		//filter user input
@@ -462,7 +475,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			unset($formFields[$unsetField]);
 		
 		//transform birthday to timestamp
-		$bday = explode('.',$this->piVars['birthday']);
+		$bday = explode('.',$this->cleanPiVars['birthday']);
 		$formFields['birthday'] = (strlen($formFields['birthday']))?mktime(0,0,0,$bday[1],$bday[0],$bday[2]):0;
 
 		//update and reset timestamp
@@ -548,16 +561,16 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		if($edit) {
 			$whereClause .= '1=1 '.$this->cObj->enableFields('tt_address');
 			$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
-			$whereClause .= ' AND tt_address.uid ='.intval($this->piVars['id']);
+			$whereClause .= ' AND tt_address.uid ='.intval($this->cleanPiVars['id']);
 	
 			$resAddressData = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause);
 			$editData = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resAddressData);
 			
-			$resOrgId = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign='.intval($this->piVars['id']));
+			$resOrgId = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign='.intval($this->cleanPiVars['id']));
 			$orgId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resOrgId);
 		} else {
-			$editData = $this->piVars;
-			$orgId['uid_local'] = $this->piVars['tx_kecontacts_organization'];
+			$editData = $this->cleanPiVars;
+			$orgId['uid_local'] = $this->cleanPiVars['tx_kecontacts_organization'];
 		}
 	
 		foreach($formFieldsConfig as $formFieldName => $formFieldConfig) {
@@ -723,7 +736,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function getComments($type = 1) {
 		$content = '';
-		$userId = intval($this->piVars['id']);
+		$userId = intval($this->cleanPiVars['id']);
 		
 		if(!$this->flexConf['show_comments']) return $this->pi_getLL('single_comments_deactivated');
 		
@@ -743,12 +756,18 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			while($comment = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resComments)) {
 				//do not show fe_users username, display first and last name if available
 				$resFeUserName = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name,first_name,last_name','fe_users','username = "'.$comment['fe_user'].'"'.$this->cObj->enableFields('fe_users'));
+				
 				$feUserComment = '';
 				if($GLOBALS['TYPO3_DB']->sql_num_rows($resFeUserName)) {
 					$feUserName = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resFeUserName);
 					$feUserComment = (strlen($feUserName['first_name']) && strlen($feUserName['last_name']))?$feUserName['first_name'].' '.$feUserName['last_name']:$feUserName['name'];
 				} else {
 					$feUserComment = $resFeUserName['name'];
+				}
+				
+				//if comments are enabled and no fe_user username available, do this
+				if(!strlen($feUserComment)) {
+					$feUserComment = $this->pi_getLL('single_comments_anonymous');
 				}
 				
 				//fill marker
@@ -774,9 +793,13 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function addComment() {
 		//set and cleanup neccessary values
-		$comment = t3lib_div::removeXSS($this->piVars['comment']);
-		$userId = intval($this->piVars['id']);
+		$comment = t3lib_div::removeXSS($this->cleanPiVars['comment']);
+		$userId = intval($this->cleanPiVars['id']);
 		$feUserId = $GLOBALS['TSFE']->fe_user->user['username'];
+		
+		if(!strlen($feUserId)) {
+			$feUserId = 'NOT LOGGED IN';
+		}
 		
 		//this part is because of selecting all entries for a company - give persons company id directly, companies get id "0"
 		$companyId = 0;
@@ -821,7 +844,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$content = '';
 		
 		//set tt_address uid to query and get record for uid
-		$userId = intval($this->piVars['id']);
+		$userId = intval($this->cleanPiVars['id']);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address','uid = '.$userId.' AND pid = '.$this->flexConf['storage_pid'].' '.$this->cObj->enableFields('tt_address'),'','','');
 		
 		//check for existence of address
@@ -893,7 +916,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//configuration delete link
 		$linkConfDelete = array(
 			'parameter' => $GLOBALS['TSFE']->id,
-			'additionalParams' => '&'.$this->prefixId.'[mode]=delete&'.$this->prefixId.'[id]='.intval($this->piVars['id']),
+			'additionalParams' => '&'.$this->prefixId.'[mode]=delete&'.$this->prefixId.'[id]='.intval($this->cleanPiVars['id']),
 			'title' => $this->pi_getLL('single_delete_link'),
 			'ATagParams' => 'class="deleteSingleView"',
 			//'useCacheHash' => 'false',
@@ -902,7 +925,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//configuration edit link
 		$linkConfEdit = array(
 			'parameter' => $GLOBALS['TSFE']->id,
-			'additionalParams' => '&'.$this->prefixId.'[mode]=edit&'.$this->prefixId.'[id]='.intval($this->piVars['id']),
+			'additionalParams' => '&'.$this->prefixId.'[mode]=edit&'.$this->prefixId.'[id]='.intval($this->cleanPiVars['id']),
 			'title' => $this->pi_getLL('single_edit_link'),
 			'ATagParams' => 'class="editSingleView"',
 			//'useCacheHash' => 'false',
@@ -954,8 +977,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//create content
 		$subpart = ($addressData['tx_kecontacts_type'] == 1)?'MAIN_PERSON':'MAIN_ORG';
 		$content_full = $this->substituteMarkers($subpart,$markerArray);
-		$content = (!$this->flexConf['show_comments'])?$this->cObj->substituteSubpart($content_full,'###SUB_COMMENTS###','<br />'.$this->pi_getLL('single_comments_deactivated')):$content_full;
-	
+		$content_tmp = (!$this->flexConf['show_comments'])?$this->cObj->substituteSubpart($content_full,'###SUB_COMMENTS###','<br />'.$this->pi_getLL('single_comments_deactivated')):$content_full;
+		$content = (($this->flexConf['comments_login_required'] == 1 && !isset($GLOBALS['TSFE']->fe_user->user['username'])) || !$this->flexConf['show_comments'])?$this->cObj->substituteSubpart($content_tmp,'###SUB_COMMENTS_INPUT###','<br />'.$this->pi_getLL('single_comments_login')):$content_tmp;
+
 		return $content;
 	}
 	
@@ -972,7 +996,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		);
 		
 		//generate filter options
-		$filterOneSelected = t3lib_div::removeXSS($this->piVars['headerDropDown']);
+		$filterOneSelected = $this->cleanPiVars['headerDropDown'];
 		$filterOneOptions = '';
 				
 		for($i = 1; $i <= 3; $i++) {
@@ -981,10 +1005,10 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 	
 		//set  default value for searchbox
-		$searchWord = (strlen($this->piVars['sword']))?(t3lib_div::removeXSS($this->piVars['sword'])):$this->pi_getLL('search_phrase');
+		$searchWord = (strlen($this->cleanPiVars['sword']))?($this->cleanPiVars['sword']):$this->pi_getLL('search_phrase');
 		
 		//get items for listview
-		if((!isset($this->piVars['headerDropDown']) || $this->piVars['headerDropDown'] == 3 || $this->piVars['headerDropDown'] == 1) && $searchWord != $this->pi_getLL('search_phrase') && strlen($searchWord)) {
+		if((!isset($this->cleanPiVars['headerDropDown']) || $this->cleanPiVars['headerDropDown'] == 3 || $this->cleanPiVars['headerDropDown'] == 1) && $searchWord != $this->pi_getLL('search_phrase') && strlen($searchWord)) {
 			//get results considering contacts of organisation
 			$listItems = $this->getDataRelation();
 		} else {
@@ -993,17 +1017,19 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//generate filter options
-		$pageSelected = (isset($this->piVars['pointer']))?(t3lib_div::removeXSS($this->piVars['pointer'])):0;
+		$pageSelected = (isset($this->cleanPiVars['pointer']))?(t3lib_div::removeXSS($this->cleanPiVars['pointer'])):0;
 		$pageOptions = '';
-				
+		
+		if($this->cleanPiVars['pointer'] >= $this->numberOfPages) $this->cleanPiVars['pointer'] = 0;
+		
 		for($i = 0; $i <= $this->numberOfPages-1; $i++) {
 			//generate each option for filter and check if selected
 			$pageOptions .= '<option value="'.$i.'" '.(($pageSelected == $i)?'selected':'').'>'.($i+1).'</option>';
 		}
 		
-		$pageCount = str_replace('%1',($this->piVars['pointer']+1),$this->pi_getLL('list_page_count'));
+		$pageCount = str_replace('%1',($this->cleanPiVars['pointer']+1),$this->pi_getLL('list_page_count'));
 		$pageCount = str_replace('%2',$this->numberOfPages,$pageCount);
-
+		
 		//fill markers
 		$markerArray = array(
 							'LIST_HEADER1' => $this->pi_getLL('list_header1'),
@@ -1026,8 +1052,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function getDataRelation() {		
 		//get filter from piVars
-		$typeFilter = intval($this->piVars['headerDropDown']);
-		$searchWord = t3lib_div::removeXSS($this->piVars['sword']);
+		$typeFilter = intval($this->cleanPiVars['headerDropDown']);
+		$searchWord = $this->cleanPiVars['sword'];
 		$content = '';
 		$searchDbFields = 'first_name,last_name,address,city,zip,email,phone,fax,mobile';
 		
@@ -1081,7 +1107,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$this->numberOfPages = ceil($resCount / $numberOfResultsToDisplay);
 		
 		//slice array for use with pagebrowser - cut elements off
-		$limitFrom = $this->piVars['pointer'] * $numberOfResultsToDisplay;
+		if($this->cleanPiVars['pointer'] >= $this->numberOfPages) $this->cleanPiVars['pointer'] = 0;	
+		
+		$limitFrom = $this->cleanPiVars['pointer'] * $numberOfResultsToDisplay;
 		$limitTo = $numberOfResultsToDisplay;
 		$itemArray = array_slice($itemList,$limitFrom,$limitTo,false);
 		
@@ -1143,8 +1171,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function getData() {		
 		//get filter from piVars
-		$typeFilter = intval($this->piVars['headerDropDown']);
-		$searchWord = t3lib_div::removeXSS($this->piVars['sword']);
+		$typeFilter = intval($this->cleanPiVars['headerDropDown']);
+		$searchWord = $this->cleanPiVars['sword'];
 		$content = '';
 		$searchDbFields = 'first_name,last_name,address,city,zip,email,phone,fax,mobile';
 		
@@ -1157,11 +1185,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$whereClause .= ' '.$this->cObj->enableFields('tt_address');
 		$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 		
-		if(intval($this->piVars['headerDropDown']) == 1)
+		if(intval($this->cleanPiVars['headerDropDown']) == 1)
 			$whereClause .= ' AND tt_address.tx_kecontacts_type IN (1,2)';
-		elseif(intval($this->piVars['headerDropDown']) == 2)
+		elseif(intval($this->cleanPiVars['headerDropDown']) == 2)
 			$whereClause .= ' AND tt_address.tx_kecontacts_type = 1';
-		elseif(intval($this->piVars['headerDropDown']) == 3)
+		elseif(intval($this->cleanPiVars['headerDropDown']) == 3)
 			$whereClause .= ' AND tt_address.tx_kecontacts_type = 2';
 		
 		//collect data for page browser
@@ -1169,7 +1197,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$numberOfResultsToDisplay = ($this->flexConf['contacts_per_page'] != 25)?$this->flexConf['contacts_per_page']:25;
 		$this->numberOfPages = ceil($GLOBALS['TYPO3_DB']->sql_num_rows($resCount) / $numberOfResultsToDisplay);
 		
-		$limit[] = $this->piVars['pointer'] * $numberOfResultsToDisplay;
+		if($this->cleanPiVars['pointer'] >= $this->numberOfPages) $this->cleanPiVars['pointer'] = 0;
+		
+		$limit[] = $this->cleanPiVars['pointer'] * $numberOfResultsToDisplay;
 		$limit[] = $numberOfResultsToDisplay;
 		//execute query
 		
@@ -1240,7 +1270,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function loadTemplate() {
 		//harden neccessary piVars
-		$viewMode = t3lib_div::removeXSS($this->piVars['mode']);
+		$viewMode = $this->cleanPiVars['mode'];
 
 		//set html template path
 		switch($viewMode) {

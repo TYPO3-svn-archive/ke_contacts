@@ -19,6 +19,7 @@
 			<label index="tt_content.pi_flexform.storage_pid">Page(s) with address data</label>
 			<label index="tt_content.pi_flexform.contacts_per_page">Items per page</label>
 			<label index="tt_content.pi_flexform.show_comments">Show comments</label>
+			<label index="tt_content.pi_flexform.comments_login_required">User must be logged in to comment</label>
 			<label index="list_link_new_contact">Create new contact</label>
 			<label index="list_header1">Name</label>
 			<label index="list_header2">Address</label>
@@ -108,6 +109,8 @@
 			<label index="error_no_results">No results</label>
 			<label index="back_link">Back</label>
 			<label index="single_comments_deactivated">Comments diabled.</label>
+			<label index="single_comments_login">Please login to comment.</label>
+			<label index="single_comments_anonymous">[Unknown]</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="list_mode_1">Mode 1</label>
@@ -124,6 +127,7 @@
 			<label index="tt_content.pi_flexform.storage_pid">Seite(n) mit Adressdatensätzen</label>
 			<label index="tt_content.pi_flexform.contacts_per_page">Kontakte pro Seite</label>
 			<label index="tt_content.pi_flexform.show_comments">Zeige Kommentare</label>
+			<label index="tt_content.pi_flexform.comments_login_required">Benutzer muss zum Kommentieren eingeloggt sein</label>
 			<label index="list_link_new_contact">Neuen Kontakt anlegen</label>
 			<label index="list_header1">Name</label>
 			<label index="list_header2">Adresse</label>
@@ -213,6 +217,8 @@
 			<label index="error_no_results">Keine Ergebnisse</label>
 			<label index="back_link">Zurück</label>
 			<label index="single_comments_deactivated">Kommentare nicht erlaubt.</label>
+			<label index="single_comments_login">Wenn Sie kommentieren möchten, loggen Sie sich bitte ein.</label>
+			<label index="single_comments_anonymous">[Unbekannt - nicht eingeloggt]</label>
 		</languageKey>
 	</data>
 </T3locallang>
