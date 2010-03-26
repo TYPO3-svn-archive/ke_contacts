@@ -20,9 +20,9 @@
 			<label index="tt_content.pi_flexform.contacts_per_page">Items per page</label>
 			<label index="tt_content.pi_flexform.show_comments">Show comments</label>
 			<label index="list_link_new_contact">Create new contact</label>
-			<label index="list_header1">Lastname Firstname Title Organization</label>
-			<label index="list_header2">Address ZIP City</label>
-			<label index="list_header3">Telephone E-Mail Website</label>
+			<label index="list_header1">Name</label>
+			<label index="list_header2">Address</label>
+			<label index="list_header3">Contact</label>
 			<label index="list_goto_page">Switch to page:</label>
 			<label index="list_page_count">Page %1 of %2</label>
 			<label index="list_create_new">Create new contact</label>
@@ -125,9 +125,9 @@
 			<label index="tt_content.pi_flexform.contacts_per_page">Kontakte pro Seite</label>
 			<label index="tt_content.pi_flexform.show_comments">Zeige Kommentare</label>
 			<label index="list_link_new_contact">Neuen Kontakt anlegen</label>
-			<label index="list_header1">Name Vorname Titel Organisation</label>
-			<label index="list_header2">Strasse Ort</label>
-			<label index="list_header3">Tel. E-Mail Website</label>
+			<label index="list_header1">Name</label>
+			<label index="list_header2">Adresse</label>
+			<label index="list_header3">Kontakt</label>
 			<label index="list_goto_page">Gehe zu Seite:</label>
 			<label index="list_page_count">Seite %1 von %2</label>
 			<label index="list_create_new">Neuen Kontakt anlegen</label>

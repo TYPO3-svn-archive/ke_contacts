@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Kontaktverwaltung',
-	'description' => '',
+	'description' => 'Manage tt_address contacts',
 	'category' => 'plugin',
 	'author' => 'www.kennziffer.com GmbH',
 	'author_email' => 'info@kennziffer.com',
@@ -21,17 +21,20 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'alpha',
+	'state' => 'beta',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
+	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
 	'version' => '0.0.0',
 	'constraints' => array(
 		'depends' => array(
+			'static_info_tables_de' => '2.0.0-',
+			'typo3' => '4.2.0-',
+			'php' => '5.2.2-',
 		),
 		'conflicts' => array(
 		),

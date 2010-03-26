@@ -84,13 +84,21 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			}
 		}
 		
+		if(!isset($this->conf['formFields.'])) {
+			die('Configuration error: Please include TS-Template!');
+		} elseif(!t3lib_extMgm::isLoaded('static_info_tables_de')) {
+			die('Extension static_info_tables_de not loaded!');
+		}
+		
 		//switch to required plugin mode
 		switch(t3lib_div::removeXSS($this->piVars['mode'])) {
 			case 'edit':
 				//edit contact
 				$GLOBALS['TSFE']->setJS($this->prefixId.'_js',$this->addJavascript());
 				if($this->piVars['submit'] && $this->validateFields()) {
-					$content = $this->updateRecord();
+					$statusContent = $this->updateRecord();
+					unset($this->piVars);
+					$content = $this->renderListView($statusContent);
 				} else
 					$content = $this->renderCreateView(true);
 			break;
@@ -98,7 +106,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				//create contact
 				$GLOBALS['TSFE']->setJS($this->prefixId.'_js',$this->addJavascript());
 				if($this->piVars['submit'] && $this->validateFields()) {
-					$content = $this->saveRecord();
+					$statusContent = $this->saveRecord();
+					unset($this->piVars);
+					$content = $this->renderListView($statusContent);
 				} else
 					$content = $this->renderCreateView();
 			break;
@@ -112,7 +122,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			case 'delete':
 				//delete contact
 				if(isset($this->piVars['deleteButton'])) {
-					$content = $this->deleteContact();
+					$statusContent = $this->deleteContact();
+					unset($this->piVars);
+					$content = $this->renderListView($statusContent);
 				} else {
 					$content = $this->renderDeleteView();
 				}
@@ -259,7 +271,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$markerArray = array(
 			'ERRORTEXT' => $this->pi_getLL('success_delete'),
 			'STATUS' => 'ok',
-			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+			'BACKLINK' => '',
 		);
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 		
@@ -269,6 +281,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	function validateFields() {
 		//prepare validation  check
 		$this->formError = array();
+		
 		$fieldConf = t3lib_div::removeDotsFromTs($this->conf['formFields.']);
 		$formFields = $this->piVars;
 		$mode = intval($this->piVars['tx_kecontacts_type']);
@@ -413,7 +426,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$markerArray = array(
 			'ERRORTEXT' => $this->pi_getLL('success_create'),
 			'STATUS' => 'ok',
-			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+			'BACKLINK' => '',
 		);
 		
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
@@ -515,7 +528,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$markerArray = array(
 			'ERRORTEXT' => $this->pi_getLL('success_update'),
 			'STATUS' => 'ok',
-			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$successLinkConf),
+			'BACKLINK' => '',
 		);
 		$content = $this->substituteMarkers('###GENERAL_ERROR###',$markerArray);
 		
@@ -753,7 +766,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			}
 		} else {
 			//no comments found for this contact
-			$content = 'Keine Kommentare';
+			$content = '';
 		}
 		
 		return $content;
@@ -946,7 +959,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		return $content;
 	}
 	
-	function renderListView() {
+	function renderListView($statusContent = '') {
 		$content = '';
 		
 		//link configuration for "new" link
@@ -990,7 +1003,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		$pageCount = str_replace('%1',($this->piVars['pointer']+1),$this->pi_getLL('list_page_count'));
 		$pageCount = str_replace('%2',$this->numberOfPages,$pageCount);
-		
+
 		//fill markers
 		$markerArray = array(
 							'LIST_HEADER1' => $this->pi_getLL('list_header1'),
@@ -1004,6 +1017,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 							'PAGES_OPTIONS' => $pageOptions,
 							'SEARCHPHRASE' => $searchWord,
 							'ITEMS' => $listItems,
+							'STATUS' => $statusContent,
 						);
 		
 		$content = $this->substituteMarkers('###LISTVIEW###',$markerArray);
