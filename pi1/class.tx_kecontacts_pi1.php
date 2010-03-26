@@ -670,6 +670,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 						$content_options .= $this->substituteMarkers('###SUB_SELECT_OPTION###',$markerArrayOptions);						
 												
 						while($country = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resCountry)) {
+							if(!strlen($editData[$formFieldName])) {
+								$editData[$formFieldName] = (isset($this->conf['createview.']['defaultcountry']))?$this->conf['createview.']['defaultcountry']:'';
+							}
 							$markerArrayOptions = array(
 								'VALUE' => $country['cn_short_de'],
 								'SELECTED' => ($editData[$formFieldName] == $country['cn_short_de'])?'selected':'',

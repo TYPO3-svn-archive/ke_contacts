@@ -82,6 +82,9 @@ formFields {
 		validate=birthday
 	}	
 }
+createview {
+	defaultcountry = Deutschland
+}
 listview.sort {
 	dbfield = tt_address.last_name
 	sort = ASC
