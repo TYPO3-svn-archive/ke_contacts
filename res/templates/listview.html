@@ -1,5 +1,5 @@
 <!--###LISTVIEW### begin-->
-<form name="tx_kecontactssearchform" id="hauptform" action="###FORMURL###" method="post" enctype="multipart/form-data">
+<form name="tx_kecontactssearchform" id="mainform" action="###FORMURL###" method="post" enctype="multipart/form-data">
     
                 <div class="headerListView">
                    ###CREATENEWCONTACT###
@@ -10,7 +10,7 @@
                     <input class="searchButtonListView"type="submit" value="Los"/>
                 </div>
 
-        <table id="kontakt_tabele">
+        <table id="contact_table">
         <tr class="bodyListViewHeader">
         <td>
             <p class="firstCellHeaderList">###LIST_HEADER1###</p>
@@ -98,3 +98,13 @@
     </td>
 </tr>
 <!--###ITEM_COMPANY### end-->
+
+<!--###NO_RESULTS### begin-->
+<tr class="###HIGHLIGHTROW###">
+	<td class="kecontacts-firstCellBodyListContainer" colspan="4">
+		<div class="firstCellBodyList">
+			<p>###NORESULTS###</p>
+        </div>
+    </td>
+</tr>
+<!--###NO_RESULTS### begin-->

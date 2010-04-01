@@ -1101,7 +1101,12 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				}
 			}
 		} else {
-			$content = '<strong>'.$this->pi_getLL('error_no_results').'</strong>';
+			$markerArray = array(
+							'NORESULTS' => $this->pi_getLL('error_no_results'),
+			);
+		
+			$content = $this->substituteMarkers('###NO_RESULTS###',$markerArray);
+			
 			return $content;
 		}
 		
@@ -1266,7 +1271,11 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				
 			}
 		} else {
-			$content = '<strong>'.$this->pi_getLL('error_no_results').'</strong>';
+			$markerArray = array(
+							'NORESULTS' => $this->pi_getLL('error_no_results'),
+			);
+		
+			$content = $this->substituteMarkers('###NO_RESULTS###',$markerArray);
 		}
 		
 		return $content;
