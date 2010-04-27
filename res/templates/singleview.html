@@ -42,9 +42,14 @@
 				</div>
 			</form>
 		   <!-- ###SUB_COMMENTS_INPUT### -->
+		   
 		   <!-- ###SUB_COMMENTS### -->
 		   <div style="margin:5px 0 0 5px">###COMMENTS###</div>
 		   <!-- ###SUB_COMMENTS### -->
+		   
+		    ###UKB_CONTENT###
+		    ###UKB_FORM###
+		   
         </div>
     </div>
 </div>
@@ -85,18 +90,23 @@
 	    </div>
 
             <!-- ###SUB_COMMENTS_INPUT### -->
-			<form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
-				<div id="textareaBodySingleView">
-					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
-				</div>
-				<div id="kecontacts-commentSaveButton">
-					<input type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
-				</div>
-			</form>
-		   <!-- ###SUB_COMMENTS_INPUT### -->
-		   <!-- ###SUB_COMMENTS### -->
-		    ###COMMENTS###
-		   <!-- ###SUB_COMMENTS### -->
+	    <form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
+		    <div id="textareaBodySingleView">
+			    <textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+		    </div>
+		    <div id="kecontacts-commentSaveButton">
+			    <input type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
+		    </div>
+	    </form>
+	   <!-- ###SUB_COMMENTS_INPUT### -->
+	   
+	   <!-- ###SUB_COMMENTS### -->
+	    ###COMMENTS###
+	   <!-- ###SUB_COMMENTS### -->
+	   
+	   ###UKB_CONTENT###
+	   ###UKB_FORM###
+	   
         </div>
 
     </div>

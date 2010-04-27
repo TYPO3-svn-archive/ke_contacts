@@ -978,6 +978,20 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$linkConfBackLink),
 		);
 		
+		
+		// UNIVERSAL KEWORKS BROWSER
+		// AK 13.04.2010
+		if (t3lib_extMgm::isLoaded('ke_ukb')) {
+			require_once(t3lib_extMgm::extPath('ke_ukb').'class.ke_ukb.php');
+			$ukb = t3lib_div::makeInstance('ke_ukb');
+			$markerArray['ukb_content'] = $ukb->renderContent('tt_address', $this->piVars['id']);
+			$markerArray['ukb_form'] = $ukb->renderForm();
+		}
+		else {
+			$markerArray['ukb_content'] = '';
+			$markerArray['ukb_form'] = '';
+		}
+		
 		//create content
 		$subpart = ($addressData['tx_kecontacts_type'] == 1)?'MAIN_PERSON':'MAIN_ORG';
 		$content_full = $this->substituteMarkers($subpart,$markerArray);
