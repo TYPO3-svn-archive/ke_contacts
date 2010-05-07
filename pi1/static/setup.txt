@@ -1,4 +1,13 @@
 plugin.tx_kecontacts_pi1 {
+templates {
+	delete = 
+	editcreate = 
+	list = 
+	single = 
+}
+styles {
+	file = 
+}
 formFields {
 	tx_kecontacts_type {
 		type=contacttype

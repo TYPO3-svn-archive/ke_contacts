@@ -984,7 +984,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		if (t3lib_extMgm::isLoaded('ke_ukb')) {
 			require_once(t3lib_extMgm::extPath('ke_ukb').'class.ke_ukb.php');
 			$ukb = t3lib_div::makeInstance('ke_ukb');
-			$markerArray['ukb_content'] = $ukb->renderContent('tt_address', $this->piVars['id']);
+			$markerArray['ukb_content'] = $ukb->renderContent('tt_address', $this->cleanPiVars['id']);
 			$markerArray['ukb_form'] = $ukb->renderForm();
 		}
 		else {
@@ -1298,32 +1298,78 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	function loadTemplate() {
 		//harden neccessary piVars
 		$viewMode = $this->cleanPiVars['mode'];
-
+		
 		//set html template path
 		switch($viewMode) {
 			case 'edit':
 			case 'create':
-				$templateFile = (!strlen($this->flexConf['edit_template_file']))?(t3lib_extMgm::siteRelPath($this->extKey).'res/templates/edit.html'):'uploads/'.$this->flexConf['edit_template_file'];
+				$templateFileConf = $this->conf['templates.']['editcreate'];
+				$templateFile = (strlen($this->flexConf['edit_template_file']))?('uploads/'.$this->flexConf['edit_template_file']):'';
+				
+				if(!strlen($templateFile) && strlen($templateFileConf)) {
+					$templateFile = $templateFileConf;
+				}
+				
+				if(!strlen($templateFile)) {
+					$templateFile = t3lib_extMgm::siteRelPath($this->extKey).'res/templates/edit.html';
+				}
 			break;
 			case 'single':
-				$templateFile = (!strlen($this->flexConf['single_template_file']))?(t3lib_extMgm::siteRelPath($this->extKey).'res/templates/singleview.html'):'uploads/'.$this->flexConf['single_template_file'];
+				$templateFileConf = $this->conf['templates.']['single'];
+				$templateFile = (strlen($this->flexConf['single_template_file']))?('uploads/'.$this->flexConf['single_template_file']):'';
+				
+				if(!strlen($templateFile) && strlen($templateFileConf)) {
+					$templateFile = $templateFileConf;
+				}
+				
+				if(!strlen($templateFile)) {
+					$templateFile = t3lib_extMgm::siteRelPath($this->extKey).'res/templates/singleview.html';
+				}
 			break;
 			case 'delete':
-				$templateFile = (!strlen($this->flexConf['delete_template_file']))?(t3lib_extMgm::siteRelPath($this->extKey).'res/templates/delete.html'):'uploads/'.$this->flexConf['delete_template_file'];
+				$templateFileConf = $this->conf['templates.']['delete'];
+				$templateFile = (strlen($this->flexConf['delete_template_file']))?('uploads/'.$this->flexConf['delete_template_file']):'';
+				
+				if(!strlen($templateFile) && strlen($templateFileConf)) {
+					$templateFile = $templateFileConf;
+				}
+				
+				if(!strlen($templateFile)) {
+					$templateFile = t3lib_extMgm::siteRelPath($this->extKey).'res/templates/delete.html';
+				}
 			break;
 			default:
-				$templateFile = (!strlen($this->flexConf['list_template_file']))?(t3lib_extMgm::siteRelPath($this->extKey).'res/templates/listview.html'):'uploads/'.$this->flexConf['list_template_file'];
+				$templateFileConf = $this->conf['templates.']['list'];
+				$templateFile = (strlen($this->flexConf['list_template_file']))?('uploads/'.$this->flexConf['list_template_file']):'';
+				
+				if(!strlen($templateFile) && strlen($templateFileConf)) {
+					$templateFile = $templateFileConf;
+				}
+				
+				if(!strlen($templateFile)) {
+					$templateFile = t3lib_extMgm::siteRelPath($this->extKey).'res/templates/listview.html';
+				}
 			break;
 		}
-			
+		
 		//place content of html template in member var
 		$this->tmpl = $this->cObj->fileResource($templateFile);
 	}
 	
 	function addCssToPage() {
 		// include css
-		$cssfile = $templateFile = (!strlen($this->flexConf['css_template_file']))?t3lib_extMgm::siteRelPath($this->extKey).'res/css/'.$this->extKey.'.css':'uploads/'.$this->flexConf['css_template_file'];
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<link rel="stylesheet" type="text/css" href="'.$cssfile.'" />';
+		$templateCssConf = $this->conf['styles.']['file'];
+		$cssFile = (strlen($this->flexConf['css_template_file']))?'uploads/'.$this->flexConf['css_template_file']:'';
+		
+		if(!strlen($cssFile) && strlen($templateCssConf)) {
+			$cssFile = $templateCssConf;
+		}
+				
+		if(!strlen($cssFile)) {
+			$cssFile = t3lib_extMgm::siteRelPath($this->extKey).'res/css/'.$this->extKey.'.css';
+		}
+		
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />';
 	}
 	
 	function addJavascript() {
