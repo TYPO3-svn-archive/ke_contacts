@@ -978,7 +978,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$linkConfBackLink),
 		);
 		
-		
 		// UNIVERSAL KEWORKS BROWSER
 		// AK 13.04.2010
 		if (t3lib_extMgm::isLoaded('ke_ukb')) {

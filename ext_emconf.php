@@ -12,9 +12,9 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Kontaktverwaltung',
-	'description' => 'Manage tt_address contacts',
+	'description' => 'Manage tt_address contacts (part of keWorks, http://www.keworks.de)',
 	'category' => 'plugin',
-	'author' => 'www.kennziffer.com GmbH',
+	'author' => 'F. Friedrich (www.kennziffer.com GmbH)',
 	'author_email' => 'info@kennziffer.com',
 	'shy' => '',
 	'dependencies' => '',

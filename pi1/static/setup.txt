@@ -21,7 +21,7 @@ formFields {
 	gender {
 		type=gender
 		values = m,f
-		required=1
+		required=0
 		validate=gender
 	}
 	title {
@@ -36,7 +36,7 @@ formFields {
 	}
 	last_name {
 		type=input
-		required=1
+		required=0
 		validate=
 	}
 	tx_kecontacts_function {
@@ -46,28 +46,28 @@ formFields {
 	}
 	address {
 		type=input
-		required=1
+		required=0
 		validate=
 	}
 	zip {
 		type=input
-		required=1
+		required=0
 		validate=int
 	}
 	city {
 		type=input
-		required=1
+		required=0
 		validate=
 	}
 	country {
 		type=country
 		value=static_info_tables
-		required=1
+		required=0
 		validate=nocountry
 	}
 	email {
 		type=input
-		required=1
+		required=0
 		validate=email
 	}
 	phone {
