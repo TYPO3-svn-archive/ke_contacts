@@ -5,11 +5,20 @@
 	overflow: hidden;
 }
 
-
-
 .tx-kecontacts-pi1 *{
-	font-family:Verdana;
+	font-family:Verdana,'Trebuchet MS',Helvetica,Arial,sans-serif;
 	font-size:12px;
+	color:#444;
+	
+}
+
+.tx-kecontacts-pi1 .bold{
+	font-weight:bold
+}
+
+.tx-kecontacts-pi1 #mainform{
+	margin:15px 0 0 15px;
+	padding:0;
 }
 
 .tx-kecontacts-pi1 textarea {
@@ -25,17 +34,17 @@
 	border:none;
 }
 
-.tx-kecontacts-pi1 #mainform{
-	margin:15px 0 0 0;
-	padding:0;
-}
-
 .tx-kecontacts-pi1 th,
 .tx-kecontacts-pi1 tbody td,
 .tx-kecontacts-pi1 td{
-	background-color: #e8e8e8;
-	padding-left:0.5em;
+	background-color: #F2F2F2;
+	padding:5px;
 	vertical-align:middle;
+}
+
+.tx-kecontacts-pi1 td{
+	border:1px solid #989898;
+	border-right-color:#DDD
 }
 
 .tx-kecontacts-pi1 table#contact_table{
@@ -43,24 +52,17 @@
 	width:100%;
 	border-collapse:collapse;
 }
-.tx-kecontacts-pi1 A.editSingleView,.tx-kecontacts-pi1 A.deleteSingleView {
-	padding: 5px;
-	text-decoration: none;
-	display:block;
+
+.tx-kecontacts-pi1 table#contact_table .firstCell{
+	width:40px;
 }
+
+.tx-kecontacts-pi1 table#contact_table .kecontacts-firstCellBodyListContainer{width:10%}
+
+.tx-kecontacts-pi1 table#contact_table .kecontacts-thirdCellBodyListContainer, .tx-kecontacts-pi1 table#contact_table .lastCell{border-right-color:#989898;}
 
 .tx-kecontacts-pi1 .ke-contacts-list-pages {
 	width: 50px;
-}
-
-A.editSingleView,
-A.deleteSingleView{
-	background-color: #a7a599;
-	border: 1px solid white;
-	font-size: 11px;
-	color: white;
-	cursor: pointer;
-	float:left;
 }
 
 A:hover.editSingleView,
@@ -89,7 +91,7 @@ A:hover.deleteSingleView{
 /*HEADER LISTVIEW*/
 .tx-kecontacts-pi1 .headerListView{
 	background:#DADADA url(../img/css_gradient1.gif) repeat-x scroll left top;
-	border:1px solid #353535;
+	border:1px solid #989898;
 	margin:0 0 5px;
 	overflow:hidden;
 	padding:5px 5px 4px;
@@ -125,11 +127,6 @@ A:hover.deleteSingleView{
 	vertical-align: middle;
 }
 
-.tx-kecontacts-pi1 .headerListView input{
-	padding:2px;
-	height:14px;
-}
-
 .tx-kecontacts-pi1 .headerListView select{
 	height:20px;
 }
@@ -139,12 +136,9 @@ A:hover.deleteSingleView{
 	background-color: #A0A09E;
 	border: 1px solid white;
 	color: white;
-	font-size: 11px;
+	font: normal bold 11px verdana;
 	width:55px;
-	padding-left:3px;
-	padding-right:3px;
-	padding-top:2px;
-	padding-bottom:4px;/*for FF*/
+	padding:2px 3px 4px;
 }
 
 .tx-kecontacts-pi1 #kecontacts-subContainerEdit a{
@@ -154,11 +148,11 @@ A:hover.deleteSingleView{
 
 /*BODY LISTVIEW HEADER*/
 .tx-kecontacts-pi1 .bodyListViewHeader{
-	height:20px;
+	height:30px;
 }
 
 .tx-kecontacts-pi1 .bodyListViewHeader td{
-	background-image:url(../img/list_item_userhead_bg_norma.gif);
+	background:#DADADA url(../img/css_gradient1.gif) repeat-x scroll left top;
 	background-repeat: repeat-x;
 	padding:0 0 0 5px;
 	margin:0;
@@ -196,28 +190,13 @@ A:hover.deleteSingleView{
 }
 
 /*BODY LISTVIEW BODY*/
-.tx-kecontacts-pi1 .firstRowBodyList td{
-	background-color: #e8e8e8;
-}
 .tx-kecontacts-pi1 .secondRowBodyList td{    
-	background-color: #DBDBDB;
-}
-
-.tx-kecontacts-pi1 .firstCellBodyList{
-  /*margin-left: 7px;*/
+	background-color: #E5E5E5;
 }
 
 .tx-kecontacts-pi1 #kecontacts-secondCellBodyListContainer{
 	border-left:1px solid white;
 	border-right: 1px solid white;
-}
-
-.tx-kecontacts-pi1 .secondCellBodyList{
-  /*margin-left: 7px;*/
-}
-
-.tx-kecontacts-pi1 .thirdCellBodyList{
-   /* margin-left: 7px;*/
 }
 
 .tx-kecontacts-pi1 #kecontacts-forthCellBodyListContainer{
@@ -228,25 +207,36 @@ A:hover.deleteSingleView{
 	text-decoration: none;
 }
 
+.tx-kecontacts-pi1 .identification a{
+	display:block;
+	height:25px;
+	width:21px;
+	text-decoration:none;
+	background: transparent url(../img/person.png) no-repeat;
+}
+
+.tx-kecontacts-pi1 .identification a, .tx-kecontacts-pi1 .company a {
+	color:transparent;
+	margin:0px auto
+}
+
+.tx-kecontacts-pi1 .company a {
+	background: transparent url(../img/company.png) no-repeat;
+	display:block;
+	height:27px;
+	width:27px
+}
+
 /*FOOTER LISTVIEW*/
-.tx-kecontacts-pi1 .footer td{
-	border-left: #f2f2f2;
-	border-right: #f2f2f2;
-	background-color: #f2f2f2;
-	padding:0.5em;
-}
-
-.tx-kecontacts-pi1 .footer td.footerlastCell{
-	text-align: right;
-}
-
-.tx-kecontacts-pi1 .footer .footerlastCell select{
-	
-}
+.tx-kecontacts-pi1 .footer p{width:160px; float:left}
+.tx-kecontacts-pi1 .footer #goToPage{float:right}
 
 /*SINGLEVIEW*/
-.tx-kecontacts-pi1 #kecontacts-mainContainerSingleView{
+.tx-kecontacts-pi1 #kecontacts-mainContainerSingleView, .tx-kecontacts-pi1 #kecontacts-mainContainerEdit {
 	min-height: 100%;
+	margin-top:35px;
+	border:1px solid #d4d4d4;
+	overflow:hidden
 }
 
 .tx-kecontacts-pi1 #kecontacts-subContainerSingleView{
@@ -254,122 +244,209 @@ A:hover.deleteSingleView{
 }
 
 .tx-kecontacts-pi1 #kecontacts-bodySingleView{
-	position:relative;
-	top:0px;
 	padding:0;
-	width:695px;
 }
 
-/*HEADER SINGLEVIEW*/
-.tx-kecontacts-pi1 #kecontacts-headerContainerSingleView{
+.tx-kecontacts-pi1 #kecontacts-buttonsContainer{
+	width:10%;
 	margin:0;
 	padding:0 0 0 5px;
 	height:35px;
 }
 
-.tx-kecontacts-pi1 #kecontacts-leftColumnHeaderSingleView{
-	margin:10px 0 0 0;
-	padding:0;
-    
+.tx-kecontacts-pi1 #kecontacts-headerSingleView, .tx-kecontacts-pi1 #kecontacts-headerEditView{
+	background: transparent url("../img/header_single.gif") repeat-x;
+	height:40px;
+   
 }
 
-.tx-kecontacts-pi1 #singleview_header{
-	margin:45px 0 0 0px;
-	padding-left:10px;
-	background-image:url(../img/list_item_head_bg_normal.gif);
-	height:25px;
+.tx-kecontacts-pi1 #kecontacts-headerSingleView .title,
+.tx-kecontacts-pi1 #kecontacts-headerEditView .title{
+	height:40px;
+	width:675px;
+	float:left;
+	line-height:14px;
+	padding:4px 20px;
+	font-size: 16px;
+	font-weight:normal;
+	text-shadow:0 0 2px #FFFFFF;
 }
 
-.tx-kecontacts-pi1 #kecontacts-leftColumnHeaderSingleView .bottom{
-	margin-top: 0px;
-	margin-left: 10px;
-	font-size: 13px;
-	font-weight: bold;
+.tx-kecontacts-pi1 #kecontacts-buttonsContainer{
+	width:auto;
+	float:right;
+	margin: 25px 20px 0 0 
 }
 
-.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView{
-	float: left;
-	text-align: left;
-	margin-top: 10px;
-}
+.tx-kecontacts-pi1 #data_delete, .tx-kecontacts-pi1 #data_edit{margin-bottom:10px; background: transparent url("../img/buttons_bg.gif") repeat-x;}
 
-.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input{
+.tx-kecontacts-pi1 #kecontacts-buttonsContainer input{
 	margin-bottom: 10px;
 }
 
-.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input.deleteSingleView{
+.tx-kecontacts-pi1 #kecontacts-buttonsContainer input.deleteSingleView{
 	width: 60px;
 	height: 22px;
 	padding-bottom: 3px;
 }
 
-.tx-kecontacts-pi1 #kecontacts-rightColumnHeaderSingleView input.editSingleView{
+.tx-kecontacts-pi1 #kecontacts-buttonsContainer input.editSingleView{
 	width: 120px;
 	height: 22px;
 	padding-bottom: 3px;
 }
 
 /*BODY SINGLEVIEW*/
-.tx-kecontacts-pi1 #kecontacts-subBodySingleView{
-}
-
-.tx-kecontacts-pi1 #kecontacts-masterDataSingleView{
-	padding: 5px 10px 5px 10px;
-	margin-top:15px;
+.tx-kecontacts-pi1 #kecontacts-subBodySingleView,
+.tx-kecontacts-pi1 #editMainform{
+	float:left;
+	width:300px;
+	margin:25px 0 25px 30px;
+	padding:20px;
+	border:1px solid #fceea7;
+	background-color:#ffffcd;
+	-moz-box-shadow: 3px 3px 18px rgba(66,66,66, 0.2);
+	-moz-box-shadow: 3px 3px 18px rgba(66,66,66, 0.2);
+	-moz-box-shadow: 3px 3px 18px rgba(66,66,66, 0.2);
 }
 
 .tx-kecontacts-pi1 #comments_form{
-	position:absolute;
-	top:0;
-	right:0;
+	margin-top:45px;
+	background-color:#FFFFCD
+}
+
+.tx-kecontacts-pi1 #comments_form h2{
+	background: transparent url("../img/comments_head_bg.gif") repeat-x;
+	padding-left:20px;
+	height:30px;
+	line-height:30px
 }
 
 .tx-kecontacts-pi1 #textareaBodySingleView{
+	height:100px;
+	position:relative;
 	margin-top: 20px;
+	padding:20px;
 
 }
 
 .tx-kecontacts-pi1 #textareaBodySingleView textarea{
-	border: 1px solid #A7A599;
-	width: 395px;
+	width: 520px;
 	height: 100px;
+	float:left;
+	border: 1px solid #A7A599;
 }
 
-.tx-kecontacts-pi1 #kecontacts-commentSaveButton{
-	margin-top: 10px;
-	text-align: right;
+/*Single-View Buttons start*/
+
+.tx-kecontacts-pi1 #kecontacts-saveButton,
+.tx-kecontacts-pi1 #data_delete,
+.tx-kecontacts-pi1 #data_edit,
+.tx-kecontacts-pi1 #backlink{
+	/*width:160px;*/
+	height:28px;
+	border:1px solid #dbdbdb;
+	background: transparent url("../img/buttons_bg.gif") repeat-x;
 }
 
-.tx-kecontacts-pi1 #kecontacts-commentSaveButton input{
-	background-color: #a7a599;
-	border: 1px solid white;
-	font-size: 11px;
-	color: white;
+.tx-kecontacts-pi1 #data_delete,
+.tx-kecontacts-pi1 #data_edit{
+	float:right;
+}
+
+.tx-kecontacts-pi1 #kecontacts-saveButton:hover,
+.tx-kecontacts-pi1 #data_delete:hover,
+.tx-kecontacts-pi1 #data_edit:hover,
+.tx-kecontacts-pi1 #backlink:hover{
+	background-image:none;
+	background-color:#fff;
+	color:#000;
+}
+
+.tx-kecontacts-pi1 #kecontacts-saveButton input,
+.tx-kecontacts-pi1 #data_delete a,
+.tx-kecontacts-pi1 #data_edit a,
+.tx-kecontacts-pi1 #backlink a{
+	display:inline-block;
+	padding:8px;
+	border:none;
+	background-color:transparent;
+	font:normal bold 11px Verdana,'Trebuchet MS',Helvetica,Arial,sans-serif;
+	color: #005e63;
 	cursor: pointer;
-	padding:5px;
 }
+
+.tx-kecontacts-pi1 #kecontacts-saveButton input:hover,
+.tx-kecontacts-pi1 #data_delete a:hover,
+.tx-kecontacts-pi1 #data_edit a:hover,
+.tx-kecontacts-pi1 #backlink a:hover{text-decoration:none; color:#000}
+
+.tx-kecontacts-pi1 #backlink{float:left}
+
+.tx-kecontacts-pi1 #data_delete a,
+.tx-kecontacts-pi1 #data_edit a,
+.tx-kecontacts-pi1 #backlink a,
+.tx-kecontacts-pi1 #kecontacts-saveButton input{
+	margin:0 auto;
+	padding-left:25px;
+	background: transparent url("../img/data_delete.gif") no-repeat 5px 5px
+}
+
+.tx-kecontacts-pi1 #data_edit a{
+	background-image: url("../img/data_edit.gif")
+}
+
+.tx-kecontacts-pi1 #backlink a{
+	background-image: url("../img/backlink.png");
+	background-position:5px center;
+}
+
+/*Single-View Buttons end*/
+.tx-kecontacts-pi1 #kecontacts-headerSingleView .person,
+.tx-kecontacts-pi1 #kecontacts-headerSingleView .company{
+	width:25px;
+	height:25px;
+	float:right;
+	margin:5px 15px 0px 0px;
+	background: transparent url("../img/person.png") no-repeat left center
+}
+
+.tx-kecontacts-pi1 #kecontacts-headerSingleView .company{background-image:url("../img/company.png"); width:25px }
 
 .tx-kecontacts-pi1 .kecontacts-commentsArea{
 	margin-top: 10px;
 	margin-bottom: 20px;
 	padding: 5px 5px 5px 5px;
-	font-style: italic;
 	font-size: 10px;
 }
 
 .tx-kecontacts-pi1 .kecontacts-commentsArea .header{
 	width: 100%;
-	font-size: 11px;
-	font-weight: bold;
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+	font-weight:bold;
+	font-style:italic;
+	border-top: 1px dotted black;
+	border-bottom: 1px dotted black;
 	margin-bottom: 5px;
 }
 
-/*EDIT*/
-/*.tx-kecontacts-pi1  #kecontacts-subContainerEdit{
-	padding-bottom: 10px;
-}*/
+.tx-kecontacts-pi1 #kecontacts-saveButton{float:right; margin-top:71px; margin-left:10px}
+.tx-kecontacts-pi1 #kecontacts-saveButton input{background-image: url("../img/save.gif"); background-position:5px center; padding-bottom:5px}
+
+/*Edit-View*/
+
+.tx-kecontacts-pi1 #editMainform{
+	float:none;
+	width:490px;
+	display:block;
+	margin:15px auto;
+	overflow:hidden;
+	text-align:left;
+}
+
+.tx-kecontacts-pi1 #editMainform #kecontacts-saveButton{
+	float:left;
+	margin:15px 0 0;
+}
 
 .tx-kecontacts-pi1 .fieldset {
 	padding: 0px;
@@ -399,9 +476,7 @@ A:hover.deleteSingleView{
 	background-color: white;
 	width: 230px;
 	border: 1px solid #A0A09E;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 3px;
+	padding:3px
 }
 
 .tx-kecontacts-pi1 #kecontacts_gender{
@@ -417,7 +492,7 @@ A:hover.deleteSingleView{
 }
 
 .tx-kecontacts-pi1 select {
-	width: 234px;
+	width: 230px;
 	border: 1px solid #A0A09E;
 }
 
@@ -425,16 +500,11 @@ A:hover.deleteSingleView{
 	float: left;
 	color: red;
 	font-style: italic;
-	margin: 5px 0 0 10px;
+	margin: 0px 0px 10px;
 }
 
-.tx-kecontacts-pi1 #kecontacts_editButton{
-	background-color:#A7A599;
-	border:1px solid white;
-	color:white;
-	cursor:pointer;
-	font-size:11px;
-	padding:5px;
+.tx-kecontacts-pi1 input#kecontacts_editButton{
+	background-image: url("../img/tick.png"); 
 }
 
 .tx-kecontacts-pi1 A.linkTextHeader {
@@ -464,3 +534,5 @@ A:hover.deleteSingleView{
 	margin:4px 5px 5px 0px;
 	padding:5px;
 }
+
+

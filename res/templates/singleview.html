@@ -1,54 +1,68 @@
 <!-- ###MAIN_PERSON### begin-->
+<div id="backlink">###BACKLINK###</div>
+<div class="clearer">&nbsp;</div>
 <div id="kecontacts-mainContainerSingleView">
     <div id="kecontacts-subContainerSingleView">
 
-        <div id="kecontacts-leftColumnHeaderSingleView">
-		<div class="bottom">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</div>
-        </div>
-        <!--<div class="clearer">&nbsp;</div>-->
+        <div id="kecontacts-headerSingleView">
+		<h1 class="title">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</h1>
+		<div class="person">&nbsp;</div>
+	</div>
+	
+	<div class="clearer">&nbsp;</div>
+        
         <div id="kecontacts-bodySingleView">
             <div id="kecontacts-subBodySingleView" >
-                <div id="kecontacts-masterDataSingleView">
+		<p id="kecontacts-masterDataSingleView">
                     <p>###FUNCTION###</p>
 		    <p>###LABEL_BELONGSTO### ###ORGANIZATION###</p>
-                    <p>###ADDRESS###<br />
-                    ###ZIP### ###CITY###<br />
-                    ###COUNTRY###</p>
-                    <p>###LABEL_PHONE### ###PHONE###<br />
-                    ###LABEL_FAX### ###FAX###<br />
-                    ###LABEL_MOBILE### ###MOBILE###<br/>
-                    ###LABEL_EMAIL### ###E-MAIL###<br/>
+                    <p>
+			###ADDRESS###<br />
+			###ZIP### ###CITY###<br />
+			###COUNTRY###
+		    </p>
+                    <p>
+			<span class="bold">###LABEL_PHONE###</span> ###PHONE###<br />
+			<span class="bold">###LABEL_FAX###</span> ###FAX###<br />
+			<span class="bold">###LABEL_MOBILE###</span> ###MOBILE###<br/>
+			<span class="bold">###LABEL_EMAIL###</span> ###E-MAIL###<br/>
                     </p>
-                    <p>###LABEL_BIRTHDAY### ###BIRTHDAY###</p>
-                </div>
-            </div>
-		    <div id="kecontacts-headerContainerSingleView">
-			<form name="form_editdelete" action="#" method="post" enctype="multipart/form-data">
-				<div id="kecontacts-rightColumnHeaderSingleView">
-					###DELETELINK###
-					###EDITLINK###
-				</div>
-			  </form>
-		      <div style="float:right; margin-top:10px">###BACKLINK###</div>
+                    <p><span class="bold">###LABEL_BIRTHDAY###</span> ###BIRTHDAY###</p>
+                </p>
+	    </div>
+	    <div id="kecontacts-buttonsContainer">
+		    <form name="form_editdelete" action="#" method="post" enctype="multipart/form-data">
+			<div id="kecontacts-rightColumnHeaderSingleView">
+			    <div id="data_delete">###DELETELINK###</div>
+			    <div class="clearer">&nbsp;</div>
+			    <div id="data_edit">###EDITLINK###</div>
+			</div>
+		    </form>
+	    </div>
+	    
+	    <div class="clearer">&nbsp;</div>
+	    
+	    <!-- ###SUB_COMMENTS_INPUT### -->
+	    <form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
+		###COMMENTS_HEAD###
+		
+		<!-- ###SUB_COMMENTS### -->
+		   <div>###COMMENTS###</div>
+		<!-- ###SUB_COMMENTS### -->
+		
+		<div id="textareaBodySingleView">
+		    <textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+		    <div id="kecontacts-saveButton">
+			<input class="editSingleView" type="submit" name="tx_kecontacts_pi1[commentButton]" value="###SAVE_COMMENT###"/>
 		    </div>
-			
-			###UKB_CONTENT###
-		    ###UKB_FORM###
-			
-		    <!-- ###SUB_COMMENTS_INPUT### -->
-			<form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
-				<div id="textareaBodySingleView">
-					<textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
-				</div>
-				<div id="kecontacts-commentSaveButton">
-					<input class="editSingleView" type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
-				</div>
-			</form>
-		   <!-- ###SUB_COMMENTS_INPUT### -->
+		</div>
+	    </form>
+	    <!-- ###SUB_COMMENTS_INPUT### -->
 		   
-		   <!-- ###SUB_COMMENTS### -->
-		   <div style="margin:5px 0 0 5px">###COMMENTS###</div>
-		   <!-- ###SUB_COMMENTS### -->
+	    ###UKB_CONTENT###
+	    ###UKB_FORM###
+			
+		    
 		   
         </div>
     </div>
@@ -56,59 +70,66 @@
 <!-- ###MAIN_PERSON### end-->
 
 <!-- ###MAIN_ORG### begin-->
+<div id="backlink">###BACKLINK###</div>
+<div class="clearer">&nbsp;</div>
 <div id="kecontacts-mainContainerSingleView">
     <div id="kecontacts-subContainerSingleView">
-	<div id="kecontacts-leftColumnHeaderSingleView">
-                <div class="bottom">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</div>
-            </div>
-        <!--<div class="clearer">&nbsp;</div>-->
+	<div id="kecontacts-headerSingleView">
+                <h1 class="title">###GENDER### ###TITLE### ###FIRST_NAME### ###LAST_NAME###</h1>
+		<div class="company">&nbsp;</div>
+		
+        </div>
+	
+	<div class="clearer">&nbsp;</div>
+        
         <div id="kecontacts-bodySingleView">
             <div id="kecontacts-subBodySingleView">
-                <div id="kecontacts-masterDataSingleView">
+                <p id="kecontacts-masterDataSingleView">
                     ###ADDRESS###<br/>
                     ###ZIP### ###CITY###<br/>
                     ###COUNTRY###<br/>
+                    <span class="bold">###LABEL_PHONE###</span>###PHONE###<br/>
+                    <span class="bold">###LABEL_FAX###</span> ###FAX###<br/>
+                    <span class="bold">###LABEL_MOBILE###</span> ###MOBILE###<br/>
+                    <span class="bold">###LABEL_EMAIL###</span> ###E-MAIL###<br/>
                     <br/>
-                    ###LABEL_PHONE### ###PHONE###<br/>
-                    ###LABEL_FAX### ###FAX###<br/>
-                    ###LABEL_MOBILE### ###MOBILE###<br/>
-                    ###LABEL_EMAIL### ###E-MAIL###<br/>
-                    <br/>
-                    ###LABEL_PERSONS###<br />
-					###PERSONS###
-                </div>
+                    <span class="bold">###LABEL_PERSONS###</span><br />
+		    ###PERSONS###
+                </p>
             </div>
-	    <div id="kecontacts-headerContainerSingleView">
+	    <div id="kecontacts-buttonsContainer">
                  <form name="form_editdelete" action="#" method="post" enctype="multipart/form-data">
-				<div id="kecontacts-rightColumnHeaderSingleView">
-                    ###DELETELINK###
-					###EDITLINK###
-					<div class="clearer">&nbsp;</div>
-                </div>
+		    	<div id="data_delete">###DELETELINK###</div>
+			<div class="clearer">&nbsp;</div>
+			<div id="data_edit">###EDITLINK###</div>
 		</form>
-		<div style="float:right; margin-top:10px">###BACKLINK###</div>
 	    </div>
+	    
+	    <div class="clearer">&nbsp;</div>
 		
-		###UKB_CONTENT###
-		###UKB_FORM###
-
-            <!-- ###SUB_COMMENTS_INPUT### -->
+	     <!-- ###SUB_COMMENTS_INPUT### -->
 	    <form id="comments_form" name="form_comments" action="###FORMURL###" method="post" enctype="multipart/form-data">
-		    <div id="textareaBodySingleView">
-			    <textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+		###COMMENTS_HEAD###
+		
+		<!-- ###SUB_COMMENTS### -->
+		###COMMENTS###
+		<!-- ###SUB_COMMENTS### -->
+		
+		<div id="textareaBodySingleView">
+		    <textarea name="tx_kecontacts_pi1[comment]" cols="" rows=""></textarea>
+		    <div id="kecontacts-saveButton">
+			<input class="editSingleView" type="submit" name="tx_kecontacts_pi1[commentButton]" value="###SAVE_COMMENT###"/>
 		    </div>
-		    <div id="kecontacts-commentSaveButton">
-			    <input type="submit" name="tx_kecontacts_pi1[commentButton]" value="Kommentar speichern"/>
-		    </div>
+		</div>
+		
+		
+		
 	    </form>
-	   <!-- ###SUB_COMMENTS_INPUT### -->
+	    <!-- ###SUB_COMMENTS_INPUT### -->
 	   
-	   <!-- ###SUB_COMMENTS### -->
-	    ###COMMENTS###
-	   <!-- ###SUB_COMMENTS### -->
-	   
-        </div>
-
+	    ###UKB_CONTENT###
+	    ###UKB_FORM###
+	</div>
     </div>
 </div>
 <!-- ###MAIN_ORG### end-->

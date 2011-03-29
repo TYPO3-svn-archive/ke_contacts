@@ -1,7 +1,14 @@
 <!-- ###MAIN_CREATE### begin-->
 <div  id="kecontacts-mainContainerEdit">
     <div id="kecontacts-subContainerEdit">
-        <form name="kecontacts_editcreate" method="post" action="###ACTION_URL###"  enctype="multipart/form-data" id="mainform">
+	<div id="kecontacts-headerEditView">
+                <h1 class="title">###ACTION_HEADER###</h1>
+	</div>
+	
+	<div class="clearer">&nbsp;</div>
+	<div style="width:auto; margin:0 auto; text-align:center">
+	
+        <form name="kecontacts_editcreate" method="post" action="###ACTION_URL###"  enctype="multipart/form-data" id="editMainform">
 
 			<!-- ###SUB_FIELD_TX_KECONTACTS_TYPE### start -->
 			<div id="kecontacts_type" class="fieldset">
@@ -180,8 +187,12 @@
 			<!-- ###SUB_FIELD_BIRTHDAY### end -->
 
             <input type="hidden" name="tx-kecontacts-pi1[step]" value="evaluate" />
+	    <div id="kecontacts-saveButton">
 			<input id="kecontacts_editButton" type="submit" name="tx_kecontacts_pi1[submit]" value="###SUBMITACTION###" />
+			<div class="clearer">&nbsp;</div>
+	    </div>
         </form>
+	</div>
 		<script type="text/javascript">###JS###</script>
     </div>
 </div>
