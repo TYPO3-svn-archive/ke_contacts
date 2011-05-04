@@ -46,6 +46,7 @@
 			<label index="single_label_mobile">Mobile:</label>
 			<label index="single_label_email">E-Mail:</label>
 			<label index="single_label_birthday">Birthday:</label>
+			<label index="single_label_www">Website:</label>
 			<label index="single_not_found">This user cannot be found.</label>
 			<label index="single_label_persons">Persons:</label>
 			<label index="single_no_persons_found">No persons found.</label>
@@ -68,6 +69,7 @@
 			<label index="edit_label_phone">Phone</label>
 			<label index="edit_label_fax">Fax</label>
 			<label index="edit_label_mobile">Mobile</label>
+			<label index="edit_label_www">Www</label>
 			<label index="edit_label_birthday">Birthday</label>
 			<label index="edit_label_tx_kecontacts_type">Type of contact</label>
 			<label index="edit_contacts_type_0">Please choose ...</label>
@@ -93,6 +95,7 @@
 			<label index="error_country">Enter a country!</label>
 			<label index="error_email">Missing valid email!</label>
 			<label index="error_phone">Phone required!</label>
+			<label index="error_www">Www required!</label>
 			<label index="error_mobile">Mobile required!</label>
 			<label index="error_fax">Missing fax!</label>
 			<label index="error_birthday">Enter birthday!</label>
@@ -111,6 +114,10 @@
 			<label index="single_comments_deactivated">Comments diabled.</label>
 			<label index="single_comments_login">Please login to comment.</label>
 			<label index="single_comments_anonymous">[Unknown]</label>
+			<label index="comments_head">Comments</label>
+			<label index="save_comment">Save comment</label>
+			<label index="action_new">Create new contact</label>
+			<label index="action_edit">Data edit</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="list_mode_1">Mode 1</label>
@@ -151,6 +158,7 @@
 			<label index="single_label_phone">Tel.:</label>
 			<label index="single_label_fax">Fax:</label>
 			<label index="single_label_mobile">Mobil:</label>
+			<label index="single_label_www">Webseite:</label>
 			<label index="single_label_email">E-Mail:</label>
 			<label index="single_label_birthday">Geburtstag:</label>
 			<label index="single_not_found">Dieser Kontakt existiert nicht (mehr).</label>
@@ -168,6 +176,7 @@
 			<label index="edit_label_last_name">Nachname / Organisation</label>
 			<label index="edit_label_tx_kecontacts_function">Funktion</label>
 			<label index="edit_label_address">Strasse</label>
+			<label index="edit_label_www">Webseite</label>
 			<label index="edit_label_zip">PLZ</label>
 			<label index="edit_label_city">Ort</label>
 			<label index="edit_label_country">Land</label>
@@ -196,6 +205,7 @@
 			<label index="error_function">Bitte geben Sie eine Funktion ein!</label>
 			<label index="error_address">Bitte geben Sie eine Strasse an!</label>
 			<label index="error_zip">Bitte geben Sie eine gültige Postleitzahl ein!</label>
+			<label index="error_www">Bitte geben Sie eine gültige Webseite an!</label>
 			<label index="error_city">Bitte geben Sie einen Wohnort an!</label>
 			<label index="error_country">Bitte geben Sie ein Land an!</label>
 			<label index="error_email">Bitte geben Sie eine gültige E-Mailadresse ein!</label>
@@ -219,6 +229,10 @@
 			<label index="single_comments_deactivated">Kommentare nicht erlaubt.</label>
 			<label index="single_comments_login">Wenn Sie kommentieren möchten, loggen Sie sich bitte ein.</label>
 			<label index="single_comments_anonymous">[Unbekannt - nicht eingeloggt]</label>
+			<label index="comments_head">Kommentare</label>
+			<label index="save_comment">Kommentar speichern</label>
+			<label index="action_new">Neuen Kontakt erstellen</label>
+			<label index="action_edit">Kontaktdaten bearbeiten</label>
 		</languageKey>
 	</data>
 </T3locallang>

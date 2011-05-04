@@ -70,6 +70,11 @@ formFields {
 		required=0
 		validate=email
 	}
+	www {
+		type=input
+		required=0
+		validate=
+	}
 	phone {
 		type=input
 		required=0

@@ -729,6 +729,9 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$markerArray['SUBMITACTION'] = ($edit)?$this->pi_getLL('edit_submitaction_edit'):$this->pi_getLL('edit_submitaction_new');
 		$markerArray['ACTION_URL'] = $this->pi_linkTP_keepPIvars_url(array(),0,0,$GLOBALS['TSFE']->id);
 		
+		//set header of the create/edit form
+		$markerArray['ACTION_HEADER'] = ($edit)?$this->pi_getLL('action_edit'):$this->pi_getLL('action_new');
+		
 		//apply type of contact to hide fields automatically after form was rendered
 		$markerArray['JS'] = 'javascript: changeType('.$editData['tx_kecontacts_type'].');';
 		
@@ -975,6 +978,10 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'COMMENTS' => $this->getComments($addressData['tx_kecontacts_type']),
 			'SINGLE_BUTTON_DELETE' => $this->pi_getLL('single_button_delete'),
 			'SINGLE_BUTTON_UPDATE' => $this->pi_getLL('single_button_update'),
+			'LABEL_WWW' =>  $this->pi_getLL('single_label_www'),
+			'WWW' =>  $addressData['www'],
+			'COMMENTS_HEAD' => '<h2>'.$this->pi_getLL('comments_head').'</h2>',
+			'SAVE_COMMENT' => $this->pi_getLL('save_comment'),
 			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$linkConfBackLink),
 		);
 		
@@ -1171,7 +1178,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 								'TELEPHONE' => $addressRow['phone'],
 								'EMAIL' => $this->cObj->typoLink($addressRow['email'],array('parameter' => $addressRow['email'])),
 								'WWW' => $this->cObj->typoLink($addressRow['www'],array('parameter' => $addressRow['www'],'extTarget' => '_blank')),
-								'EDIT_ICON' => $this->cObj->typoLink($this->cObj->fileResource(t3lib_extMgm::siteRelPath($this->extKey).'res/img/Edit.png'),$linkConfEdit),
+								'EDIT_ICON' => $this->cObj->typoLink("&nbsp;",$linkConfEdit),
+								'EDIT' => $this->cObj->typoLink($addressRow['last_name'].'&nbsp;'.$addressRow['first_name'].'<br />'.$company, $linkConfEdit),
 								'HIGHLIGHTROW' => (($rowCount % 2) == 0)?'firstRowBodyList':'secondRowBodyList',
 							);
 				
@@ -1267,7 +1275,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 								'TELEPHONE' => $addressRow['phone'],
 								'EMAIL' => $this->cObj->typoLink($addressRow['email'],array('parameter' => $addressRow['email'])),
 								'WWW' => $this->cObj->typoLink($addressRow['www'],array('parameter' => $addressRow['www'],'extTarget' => '_blank')),
-								'EDIT_ICON' => $this->cObj->typoLink($this->cObj->fileResource(t3lib_extMgm::siteRelPath($this->extKey).'res/img/Edit.png'),$linkConfEdit),
+								'EDIT_ICON' => $this->cObj->typoLink("&nbsp;",$linkConfEdit),
+								'EDIT' => $this->cObj->typoLink($addressRow['last_name'].'&nbsp;'.$addressRow['first_name'].'<br />'.$company, $linkConfEdit),
 								'HIGHLIGHTROW' => (($rowCount % 2) == 0)?'firstRowBodyList':'secondRowBodyList',
 							);
 				
