@@ -1,4 +1,7 @@
 plugin.tx_kecontacts_pi1 {
+_LOCAL_LANG.default {
+}
+
 templates {
 	delete = 
 	editcreate = 
@@ -94,7 +97,7 @@ formFields {
 		type=birthday
 		required=0
 		validate=birthday
-	}	
+	}
 }
 createview {
 	defaultcountry = Deutschland

@@ -1,0 +1,30 @@
+# Please follow this example to add new database fields of table "tt_address" to extension
+#
+# 1. Create new field in TYPO3 database, table "tt_address" and name it "tesfeld_db"
+# 2. Add markers ###LABEL_TESTFELD### and ###TESTFELD### in desired html templates
+# 3. Add following typoscript in typo3 backend - e.g. into extension template
+
+plugin.tx_kecontacts_pi1 {
+	_LOCAL_LANG.default {
+		edit_label_testfeld = Label Testfeld EDIT
+		single_label_testfeld = Label Testfeld SINGLEVIEW
+		list_label_testfeld = Label Testfeld LISTVIEW
+		error_testfeld = Fehlermeldung Testfeld
+	}
+
+	formFields {
+		#internal name of your field, no need to name it like database field if you use "dbFieldName"-setting (see below)
+		testfeld {
+			#type of input field to render in frontend
+			type=input
+			#field is requires and must contain any value
+			required=1
+			#validation method
+			validate=
+			#if you added a new field to table "tt_address", please specify database fieldname here
+			dbFieldName = testfeld_db
+		}
+	}
+}
+
+# 4. Clear cache, switch to frontend and see the result

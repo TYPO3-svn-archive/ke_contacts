@@ -149,7 +149,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function filterInput() {
 		foreach($this->piVars as $piKey => $piValue) {
-			$this->cleanPiVars[$piKey] = t3lib_div::removeXSS($piValue);
+			$this->cleanPiVars[$piKey] = htmlspecialchars($piValue,ENT_QUOTES);
 		}
 	}
 	
@@ -206,6 +206,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$whereClause .= ' AND tx_kecontacts_type != 0';
 		$whereClause .= $this->cObj->enableFields('tt_address');
 		
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
+		
 		$resUserDetails = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause);
 		//user does not exist, exit with error
 		if(!$GLOBALS['TYPO3_DB']->sql_num_rows($resUserDetails)) {
@@ -256,7 +258,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				}
 				
 				//check if there are existing relations else skip this step
-				$resCheckRelationCount = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_local='.$contactId);
+				$resCheckRelationCount = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_local='.$GLOBALS['TYPO3_DB']->quoteStr($contactId,'tt_address_tx_kecontacts_members_mm'));
 				
 				if($GLOBALS['TYPO3_DB']->sql_num_rows($resCheckRelationCount)) {
 					$whereClause = 'uid_local ='.$contactId;
@@ -302,7 +304,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//filter user input
 		foreach($formFields as $fieldName => $fieldValue) {
-			$formFields[$fieldName] = t3lib_div::removeXSS($fieldValue);
+			$formFields[$fieldName] = htmlspecialchars($fieldValue,ENT_QUOTES);
 		}
 		
 		//if we check an organisation, we have to unset some validations for a single person
@@ -372,10 +374,16 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$addressId = intval($this->cleanPiVars['id']);
 		$formFields['tstamp'] = time();
 		$formFields['pid'] = $this->flexConf['storage_pid'];
+		$fieldConf = t3lib_div::removeDotsFromTs($this->conf['formFields.']);
 		
 		//filter user input
 		foreach($formFields as $fieldName => $fieldValue) {
-			$formFields[$fieldName] = t3lib_div::removeXSS($fieldValue);
+			if(strlen($fieldConf[$fieldName]['dbFieldName'])) {
+				$formFields[$fieldConf[$fieldName]['dbFieldName']] = htmlspecialchars($fieldValue,ENT_QUOTES);
+				unset($formFields[$fieldName]);
+			} else {
+				$formFields[$fieldName] = htmlspecialchars($fieldValue,ENT_QUOTES);
+			}
 		}
 		
 		//unset fields which are not needed for update query
@@ -389,6 +397,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//check for duplicate contacts
 		$duplicateWhere = ' first_name = "'.$formFields['first_name'].'" AND last_name = "'.$formFields['last_name'].'" AND email = "'.$formFields['email'].'" AND pid='.$this->flexConf['storage_pid'].' '.$this->cObj->enableFields('tt_address');
+		$duplicateWhere = $GLOBALS['TYPO3_DB']->quoteStr($duplicateWhere,'tt_address');
 		$resDuplicateCheck = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$duplicateWhere);
 		
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resDuplicateCheck)) {
@@ -450,19 +459,27 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function updateRecord() {
 		//prepare values for update
+		
 		$content = '';
 		$formFields = $this->cleanPiVars;
 		$orgId = intval($formFields['tx_kecontacts_organization']);
 		$addressId = intval($this->cleanPiVars['id']);
 		$formFields['tstamp'] = time();
+		$fieldConf = t3lib_div::removeDotsFromTs($this->conf['formFields.']);
 		
 		//filter user input
 		foreach($formFields as $fieldName => $fieldValue) {
-			$formFields[$fieldName] = t3lib_div::removeXSS($fieldValue);
+			//consider db-mapping for self included fields in db
+			if(strlen($fieldConf[$fieldName]['dbFieldName'])) {
+				$formFields[$fieldConf[$fieldName]['dbFieldName']] = htmlspecialchars($fieldValue,ENT_QUOTES);
+				unset($formFields[$fieldName]);
+			} else {
+				$formFields[$fieldName] = htmlspecialchars($fieldValue,ENT_QUOTES);
+			}
 		}
 		
 		//check uid of old organization to update relations later on
-		$resOldOrgId = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign='.$addressId);
+		$resOldOrgId = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign='.$GLOBALS['TYPO3_DB']->quoteStr($addressId,'tt_address_tx_kecontacts_members_mm'));
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resOldOrgId)) {
 			$oldOrgId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resOldOrgId);
 			$oldOrgId = ($orgId == $oldOrgId['uid_local'])?-2:$oldOrgId['uid_local'];
@@ -478,7 +495,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//transform birthday to timestamp
 		$bday = explode('.',$this->cleanPiVars['birthday']);
 		$formFields['birthday'] = (strlen($formFields['birthday']))?mktime(0,0,0,$bday[1],$bday[0],$bday[2]):0;
-
+		
 		//update and reset timestamp
 		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		$resUpdateData = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_address','uid='.$addressId,$formFields);
@@ -563,7 +580,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			$whereClause .= '1=1 '.$this->cObj->enableFields('tt_address');
 			$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 			$whereClause .= ' AND tt_address.uid ='.intval($this->cleanPiVars['id']);
-	
+			$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
+		
 			$resAddressData = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause);
 			$editData = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resAddressData);
 			
@@ -573,7 +591,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			$editData = $this->cleanPiVars;
 			$orgId['uid_local'] = $this->cleanPiVars['tx_kecontacts_organization'];
 		}
-	
+		
 		foreach($formFieldsConfig as $formFieldName => $formFieldConfig) {
 			$type = $formFieldConfig['type'];
 			$required = $formFieldConfig['required'];
@@ -583,7 +601,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				case 'input':
 					$markerArray_field = array(
 						'NAME' => $this->prefixId.'['.$formFieldName.']',
-						'VALUE' => $editData[$formFieldName],
+						'VALUE' => (isset($formFieldConfig['dbFieldName']))?$editData[$formFieldConfig['dbFieldName']]:$editData[$formFieldName],
 					);
 					
 					$content_field = $this->substituteMarkers('###SUB_INPUT_TEXT###',$markerArray_field);
@@ -611,6 +629,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 					$whereClause = ' 1=1 '.$this->cObj->enableFields('tt_address');
 					$whereClause .= ' AND tt_address.pid IN ('.$this->flexConf['storage_pid'].')';
 					$whereClause .= ' AND tx_kecontacts_type = 2';
+					$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause);
 					
 					$resOrg = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,last_name','tt_address',$whereClause,'','last_name ASC','');
 					
@@ -762,7 +781,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resComments)) {
 			while($comment = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resComments)) {
 				//do not show fe_users username, display first and last name if available
-				$resFeUserName = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name,first_name,last_name','fe_users','username = "'.$comment['fe_user'].'"'.$this->cObj->enableFields('fe_users'));
+				$resFeUserName = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name,first_name,last_name','fe_users','username = "'.$GLOBALS['TYPO3_DB']->quoteStr($comment['fe_user'],'fe_users').'"'.$this->cObj->enableFields('fe_users'));
 				
 				$feUserComment = '';
 				if($GLOBALS['TYPO3_DB']->sql_num_rows($resFeUserName)) {
@@ -800,7 +819,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 	
 	function addComment() {
 		//set and cleanup neccessary values
-		$comment = t3lib_div::removeXSS($this->cleanPiVars['comment']);
+		$comment = htmlspecialchars($this->cleanPiVars['comment'],ENT_QUOTES);
 		$userId = intval($this->cleanPiVars['id']);
 		$feUserId = $GLOBALS['TSFE']->fe_user->user['username'];
 		
@@ -810,14 +829,14 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//this part is because of selecting all entries for a company - give persons company id directly, companies get id "0"
 		$companyId = 0;
-		$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign = '.$userId);
+		$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local','tt_address_tx_kecontacts_members_mm','uid_foreign = '.$GLOBALS['TYPO3_DB']->quoteStr($userId,'tt_address_tx_kecontacts_members_mm'));
 		
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resCompany)) {
 			$companyId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resCompany);
 		}
 		
 		//find pid of current userId and store related comment there
-		$resUserPid = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid','tt_address','uid = '.$userId.' '.$this->cObj->enableFields('tt_address'));
+		$resUserPid = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid','tt_address','uid = '.$GLOBALS['TYPO3_DB']->quoteStr($userId,'tt_address').' '.$this->cObj->enableFields('tt_address'));
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($resUserPid))
 			$userPid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resUserPid);
 		else
@@ -852,7 +871,8 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		
 		//set tt_address uid to query and get record for uid
 		$userId = intval($this->cleanPiVars['id']);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address','uid = '.$userId.' AND pid = '.$this->flexConf['storage_pid'].' '.$this->cObj->enableFields('tt_address'),'','','');
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr('uid = '.$userId.' AND pid = '.$this->flexConf['storage_pid'].' '.$this->cObj->enableFields('tt_address'),'tt_address');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'','','');
 		
 		//check for existence of address
 		if(!$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
@@ -876,6 +896,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			$whereClause .= ' AND tta2.tx_kecontacts_type = 1';
 			$whereClause .= ' AND tt_address_tx_kecontacts_members_mm.uid_local = '.$userId;
 			$whereClause .= ' AND tta2.deleted = 0 AND tta2.hidden = 0';
+			$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause);
 			
 			//querying same table not possible with typo3 db core functions, using the "dirty way" here
 			$resPersons = $GLOBALS['TYPO3_DB']->sql_query('SELECT tta2.* FROM tt_address,tt_address_tx_kecontacts_members_mm,tt_address AS tta2 WHERE tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = tta2.uid '.$whereClause.' ORDER BY tta2.last_name ASC');
@@ -898,13 +919,14 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//get company person belongs to
 		$belongsTo = '';
 		if($addressData['tx_kecontacts_type'] == 1) {
-			$whereClause .= ' '.$this->cObj->enableFields('tt_address');
+			$whereClause = ' '.$this->cObj->enableFields('tt_address');
 			$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 			$whereClause .= ' AND tt_address.tx_kecontacts_type = 2';
+			$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
 			
 			//$GLOBALS['TYPO3_DB']->debugOutput = true;
 			$resBelongsTo = $GLOBALS['TYPO3_DB']->sql_query('SELECT tt_address.last_name,tt_address.uid FROM tt_address,tt_address_tx_kecontacts_members_mm AS b WHERE tt_address.uid = b.uid_local AND b.uid_foreign = '.$userId.' '.$whereClause);
-
+			
 			if($GLOBALS['TYPO3_DB']->sql_num_rows($resBelongsTo)) {
 				
 				$belongsToRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resBelongsTo);
@@ -985,6 +1007,18 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			'BACKLINK' => $this->cObj->typoLink($this->pi_getLL('back_link'),$linkConfBackLink),
 		);
 		
+		//add individual fields
+		$formFieldsConfig = t3lib_div::removeDotsFromTS($this->conf['formFields.']);
+		$excludeFields = array('gender','title','first_name','last_name','tx_kecontacts_function','address','zip','city','country','phone','fax','mobile','email','birthday','www');
+		
+		foreach($formFieldsConfig as $ffName => $ffConfig) {
+			$ffName = strtoupper($ffName);
+			if(!array_key_exists($ffName,$markerArray)) {
+				$markerArray['LABEL_'.$ffName] = $this->pi_getLL('single_label_'.strtolower($ffName));
+				$markerArray[$ffName] = (isset($ffConfig['dbFieldName'])?$addressData[$ffConfig['dbFieldName']]:$addressData[$ffName]);
+			}
+		}
+		
 		// UNIVERSAL KEWORKS BROWSER
 		// AK 13.04.2010
 		if (t3lib_extMgm::isLoaded('ke_ukb')) {
@@ -1041,7 +1075,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		}
 		
 		//generate filter options
-		$pageSelected = (isset($this->cleanPiVars['pointer']))?(t3lib_div::removeXSS($this->cleanPiVars['pointer'])):0;
+		$pageSelected = (isset($this->cleanPiVars['pointer']))?(htmlspecialchars($this->cleanPiVars['pointer'],ENT_QUOTES)):0;
 		$pageOptions = '';
 		
 		if($this->cleanPiVars['pointer'] >= $this->numberOfPages) $this->cleanPiVars['pointer'] = 0;
@@ -1090,6 +1124,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$whereClause .= ' '.$this->cObj->enableFields('tt_address');
 		$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 		$whereClause .= ' AND tt_address.tx_kecontacts_type IN (1,2)';
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
 		
 		//execute query
 		//$GLOBALS['TYPO3_DB']->debugOutput = true;
@@ -1112,7 +1147,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 			}
 			
 			//get contacts working for found organizations
-			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.join(',',$relatedList).') AND tt_address.deleted = 0 AND tt_address.hidden = 0');
+			$resRelatedContacts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address,tt_address_tx_kecontacts_members_mm','tt_address_tx_kecontacts_members_mm.uid_foreign = tt_address.uid AND tt_address_tx_kecontacts_members_mm.uid_local IN ('.$GLOBALS['TYPO3_DB']->quoteStr(join(',',$relatedList),'tt_address').') AND tt_address.deleted = 0 AND tt_address.hidden = 0');
 			
 			if(@$GLOBALS['TYPO3_DB']->sql_num_rows($resRelatedContacts)) {
 				//add contacts only if not already in result list
@@ -1155,7 +1190,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				
 				//get company of a person - do it in a nicer way later on
 				if($addressRow['tx_kecontacts_type'] == 1) {
-					$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tt_address.last_name','tt_address,tt_address_tx_kecontacts_members_mm','tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = '.$addressRow['uid'].' '.$this->cObj->enableFields('tt_address'));
+					$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tt_address.last_name','tt_address,tt_address_tx_kecontacts_members_mm','tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = '.$GLOBALS['TYPO3_DB']->quoteStr($addressRow['uid'],'tt_address').' '.$this->cObj->enableFields('tt_address'));
 					if($GLOBALS['TYPO3_DB']->sql_num_rows($resCompany)) {
 						$arrCompany = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resCompany);
 						$company = $arrCompany['last_name'];
@@ -1182,6 +1217,18 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 								'EDIT' => $this->cObj->typoLink($addressRow['last_name'].'&nbsp;'.$addressRow['first_name'].'<br />'.$company, $linkConfEdit),
 								'HIGHLIGHTROW' => (($rowCount % 2) == 0)?'firstRowBodyList':'secondRowBodyList',
 							);
+				
+				//add individual markers
+				$formFieldsConfig = t3lib_div::removeDotsFromTS($this->conf['formFields.']);
+				$excludeFields = array('title','first_name','last_name','company','address','zip','city','telephone','email','phone','www');
+		
+				foreach($formFieldsConfig as $ffName => $ffConfig) {
+					$ffName = strtoupper($ffName);
+					if(!array_key_exists($ffName,$markerArray)) {
+						$markerArray['LABEL_'.$ffName] = $this->pi_getLL('list_label_'.strtolower($ffName));
+						$markerArray[$ffName] = (isset($ffConfig['dbFieldName'])?$addressRow[$ffConfig['dbFieldName']]:$addressRow[$ffName]);
+					}
+				}
 				
 				//highlight companies in list view
 				if($addressRow['tx_kecontacts_type'] == 2) {
@@ -1222,6 +1269,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		elseif(intval($this->cleanPiVars['headerDropDown']) == 3)
 			$whereClause .= ' AND tt_address.tx_kecontacts_type = 2';
 		
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
 		//collect data for page browser
 		$resCount = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'',$orderByField.' '.$orderByOrder,'');	
 		$numberOfResultsToDisplay = ($this->flexConf['contacts_per_page'] != 25)?$this->flexConf['contacts_per_page']:25;
@@ -1252,7 +1300,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 				
 				//get company of a person - do it in a nicer way later on
 				if($addressRow['tx_kecontacts_type'] == 1) {
-					$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tt_address.last_name','tt_address,tt_address_tx_kecontacts_members_mm','tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = '.$addressRow['uid'].' '.$this->cObj->enableFields('tt_address'));
+					$resCompany = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tt_address.last_name','tt_address,tt_address_tx_kecontacts_members_mm','tt_address.uid = tt_address_tx_kecontacts_members_mm.uid_local AND tt_address_tx_kecontacts_members_mm.uid_foreign = '.$GLOBALS['TYPO3_DB']->quoteStr($addressRow['uid'],'tt_address').' '.$this->cObj->enableFields('tt_address'));
 					if(@$GLOBALS['TYPO3_DB']->sql_num_rows($resCompany)) {
 						$arrCompany = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resCompany);
 						$company = $arrCompany['last_name'];
@@ -1279,6 +1327,18 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 								'EDIT' => $this->cObj->typoLink($addressRow['last_name'].'&nbsp;'.$addressRow['first_name'].'<br />'.$company, $linkConfEdit),
 								'HIGHLIGHTROW' => (($rowCount % 2) == 0)?'firstRowBodyList':'secondRowBodyList',
 							);
+				
+				//add individual fields
+				$formFieldsConfig = t3lib_div::removeDotsFromTS($this->conf['formFields.']);
+				$excludeFields = array('title','first_name','last_name','company','address','zip','city','telephone','email','phone','www');
+		
+				foreach($formFieldsConfig as $ffName => $ffConfig) {
+					$ffName = strtoupper($ffName);
+					if(!array_key_exists($ffName,$markerArray)) {
+						$markerArray['LABEL_'.$ffName] = $this->pi_getLL('list_label_'.strtolower($ffName));
+						$markerArray[$ffName] = (isset($ffConfig['dbFieldName'])?$addressRow[$ffConfig['dbFieldName']]:$addressRow[$ffName]);
+					}
+				}
 				
 				//highlight companies in list view
 				if($addressRow['tx_kecontacts_type'] == 2) {
