@@ -1,3 +1,12 @@
+2011-05-12 www.kennziffer.com GmbH  <info@kennziffer.com>
+
+	* new html/css styles
+	* changed some template markers
+	* fixed sanitizing of user input
+	* added possibility to add user defined database fields in every view
+	* tt_address "www" field added to all views as default field
+	* extended manual
+
 2009-11-25 www.kennziffer.com GmbH  <info@kennziffer.com>
 
 	* initial code generated with kickstarter
