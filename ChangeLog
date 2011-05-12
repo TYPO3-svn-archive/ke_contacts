@@ -6,6 +6,8 @@
 	* added possibility to add user defined database fields in every view
 	* tt_address "www" field added to all views as default field
 	* extended manual
+	* dependencies added in ext_emconf.php
+	* extension state set to "stable"
 
 2009-11-25 www.kennziffer.com GmbH  <info@kennziffer.com>
 
