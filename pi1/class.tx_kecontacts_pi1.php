@@ -1124,7 +1124,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		$whereClause .= ' '.$this->cObj->enableFields('tt_address');
 		$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 		$whereClause .= ' AND tt_address.tx_kecontacts_type IN (1,2)';
-		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
 		
 		//execute query
 		//$GLOBALS['TYPO3_DB']->debugOutput = true;
@@ -1269,7 +1268,6 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		elseif(intval($this->cleanPiVars['headerDropDown']) == 3)
 			$whereClause .= ' AND tt_address.tx_kecontacts_type = 2';
 		
-		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr($whereClause,'tt_address');
 		//collect data for page browser
 		$resCount = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address',$whereClause,'',$orderByField.' '.$orderByOrder,'');	
 		$numberOfResultsToDisplay = ($this->flexConf['contacts_per_page'] != 25)?$this->flexConf['contacts_per_page']:25;
