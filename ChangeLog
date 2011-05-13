@@ -1,5 +1,9 @@
 2011-05-12 www.kennziffer.com GmbH  <info@kennziffer.com>
 
+	* fixed: no more search results after sanitizing user input
+
+2011-05-12 www.kennziffer.com GmbH  <info@kennziffer.com>
+
 	* new html/css styles
 	* changed some template markers
 	* fixed sanitizing of user input
