@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Kontaktverwaltung',
 	'description' => 'Manage tt_address contacts (part of keWorks, http://www.keworks.de)',
 	'category' => 'plugin',
-	'author' => 'F. Friedrich',
+	'author' => 'F. Friedrich, I. Gaisinskaia (www.kennziffer.com GmbH)',
 	'author_email' => 'info@kennziffer.com',
 	'shy' => '',
 	'dependencies' => 'static_info_tables_de,tt_address',
@@ -34,8 +34,8 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'static_info_tables_de' => '2.0.0-',
 			'tt_address' => '2.2.1-',
-			'typo3' => '4.3.0-0.0.0',
-			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.3.0-',
+			'php' => '5.2.0-',
 		),
 		'conflicts' => array(
 		),
