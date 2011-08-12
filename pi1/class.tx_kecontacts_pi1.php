@@ -891,6 +891,7 @@ class tx_kecontacts_pi1 extends tslib_pibase {
 		//connect persons to organization and display as single links
 		$persons = '';
 		if($addressData['tx_kecontacts_type'] == 2) {
+			$whereClause = '';
 			$whereClause .= ' '.$this->cObj->enableFields('tt_address');
 			$whereClause .= ' AND tt_address.pid = '.$this->flexConf['storage_pid'];
 			$whereClause .= ' AND tta2.tx_kecontacts_type = 1';

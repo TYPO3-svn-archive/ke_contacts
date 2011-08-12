@@ -1,3 +1,12 @@
+2011-08-12 www.kennziffer.com GmbH  <info@ke0nnziffer.com>
+	
+	* bugfix: displaying contacts related to a company failed because of malformed sql-query
+
+2011-05-27 www.kennziffer.com GmbH  <info@kennziffer.com>
+
+	* changed information in ext_emconf.php
+	* added pdf manual in doc-folder of ke_contacts
+	
 2011-05-12 www.kennziffer.com GmbH  <info@kennziffer.com>
 
 	* fixed: no more search results after sanitizing user input
